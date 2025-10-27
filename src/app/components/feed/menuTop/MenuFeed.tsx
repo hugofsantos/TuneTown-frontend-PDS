@@ -25,10 +25,10 @@ export const MenuFeed = ({ userAvatar, username }: MenuFeedProps) => {
           <div className="w-full h-full">
             <input className="outline-none bg-copacity_25 w-full h-full rounded-md " placeholder="" />
             <div className="w-full gap-4 mt-5 flex items-end justify-around ">
-              <MenuitemShare src={music_pink_logo} name="Música" />
-              <MenuitemShare src={playlist_purple_logo} name="Playlist" />
-              <MenuitemShare src={podcast_green_logo} name="Podcast" />
-              <MenuitemShare src={forum_blue_logo} name="Forum" />
+              <MenuitemShare src={music_pink_logo} name="Música" type="music" />
+              <MenuitemShare src={playlist_purple_logo} name="Playlist" type="album" />
+              <MenuitemShare src={podcast_green_logo} name="Podcast" type="podcast" />
+              <MenuitemShare src={forum_blue_logo} name="Forum" type="music" />
             </div>
           </div>
         </div>

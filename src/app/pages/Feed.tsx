@@ -6,12 +6,11 @@ import { useEffect } from "react";
 
 
 export const Feed = () => {
-  const { user, posts } = useAuth();
+  const { user, profile, posts } = useAuth();
 
   useEffect(() => {
-    
- console.log(posts)
-  }),[posts];
+    console.log("Posts updated:", posts);
+  }, [posts]);
 
     return (
       <div className="justify-center 
@@ -19,17 +18,17 @@ export const Feed = () => {
       items-center">
         <MenuFeed
           username={user?.username}
-          userAvatar={user?.profile?.avatarUrl}
+          userAvatar={profile?.urlPhoto}
         />
         <ContainerPosts>
-          {posts.length > 0 && posts.map((post, index) => (
+          {posts.length > 0 && posts.map((tuneet, index) => (
             <Card
-              authorImg={user?.profile?.avatarUrl}
+              authorImg={profile?.urlPhoto}
               key={index}
-              author={post.author}
-              content={post.content}
-              created_at={post.created_at}
-              track={post.track}
+              author={tuneet?.authorId}
+              content={tuneet?.textContent}
+              created_at={tuneet?.id}
+              track={tuneet}
             />
           ))}
         </ContainerPosts>

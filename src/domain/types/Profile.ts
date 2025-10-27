@@ -1,13 +1,13 @@
 import { UserRegister } from "./Auth";
-import { Post } from "./Post";
+import { Tuneet } from "./Post";
 import { UserEntity } from "./User";
 
 export type Profile = {
-  userId: string;
+  id: string;
   bio?: string | null;
   favoriteSong?: string | null;
-  avatarUrl?: string | null;
-  posts: Post[] | null;
+  urlPhoto?: string | null;
+  posts: Tuneet[] | null;
   followers: UserEntity[] | null;
   following: UserEntity[] | null;
 };
@@ -20,10 +20,9 @@ export type ProfileEntity = Profile & {
 };
 
 export type EditProfile = UserRegister & {
-  avatarURL?: string | null;
   bio?: string | null;
   favoriteSong?: string;
-  password: null;
+  // password: null;
 };
 
 export type EditConfig = UserRegister & {

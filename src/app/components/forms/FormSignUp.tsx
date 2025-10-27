@@ -1,10 +1,9 @@
 
-import { UserRegister } from "../../../domain/types/Auth";
+import { UserRegister } from "@/domain/types/Auth";
 import Input from "../Input";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
-import { signUpRequest } from "../../services/auth/signUpRequest";
-import { useAuth } from "../../../infra/contexts/auth/UseAuth";
+import { useAuth } from "@/infra/contexts/auth/UseAuth";
 
 interface FormSignUpProps {
   name?: string;

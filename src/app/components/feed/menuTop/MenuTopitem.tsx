@@ -1,18 +1,26 @@
 import { Img } from "../../Img";
 import * as Dialog from "@radix-ui/react-dialog";
 import { MakeAPost } from "../MakeAPost";
+import { useState } from "react";
 
 type MenuitemShareProps = {
 src :string;
 alt? :string;
 name :string;
+type: itemType;
 }
 
-export const MenuitemShare = ({ src, alt, name }: MenuitemShareProps) => {
+type itemType = "music" | "album" | "podcast";
+
+export const MenuitemShare = ({ src, alt, name, type }: MenuitemShareProps) => {
+  const [open, setOpen] = useState(false);
+  const [itemType, setItemType] = useState<itemType>("music");
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button
+        onClick={() => setItemType(type.toLowerCase() as itemType)}
           className="w-[25%] py-2 px-5 text-center 
         items-center gap-2 justify-center flex rounded-full
         border border-stroke color-constrast hover:bg-black/10
@@ -37,7 +45,7 @@ export const MenuitemShare = ({ src, alt, name }: MenuitemShareProps) => {
         shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] 
         focus:outline-none"
         >
-          <MakeAPost />
+          <MakeAPost itemType={itemType} onClose={() => setOpen(false)} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

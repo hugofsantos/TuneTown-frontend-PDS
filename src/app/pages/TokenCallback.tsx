@@ -16,10 +16,11 @@ export const TokenCallback = () => {
     const fetchTokens = async () => {
       const code = getQueryParams();
 
-      const redirect_uri = "http://localhost:3000/callback";
+      const redirect_uri = "http://localhost:22223000/callback";
       const clientId = "3ac3788f57dc4ea3bccc70d37a4d8697";
       const clientSecret = "20d852123588428daef56b6c9d63431f";
 
+      console.log("TokenCallback code:", code);
       if (!code) {
         console.error("Authorization code is missing");
         return

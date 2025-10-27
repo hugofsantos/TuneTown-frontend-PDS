@@ -3,14 +3,14 @@ import { FavoriteMusic } from "./FavoriteMusic";
 import { EditProfileButton } from "./EditProfileButton";
 import { MenuItem } from "./MenuItem";
 import { useAuth } from "../../../infra/contexts/auth/UseAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Photo } from "../Photo";
 
 export const ProfileMenu = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [selectedButton, setSelectedButton] = useState<string>("posts");
   const items = ["posts", "foruns", "curtidas"];
-
+  
   return (
     <div className="h-[30%] border-b-[1px] border-stroke ">
       {/* GO BACK */}
@@ -28,7 +28,7 @@ export const ProfileMenu = () => {
         <div className="flex justify-between  h-[84%] px-6 pt-4 h-">
           <div className="flex flex-row items-start  w-1/2">
             <div className="flex gap-2 items-center ">
-              <Photo src={user?.profile.avatarUrl} size="4" />
+              <Photo src={profile?.urlPhoto} size="4" />
               <div
                 className="w-24 z-10 top-[4.5rem] left-16 absolute h-8
                      bg-fume rounded-tr-xl rounded-bl-xl rounded-br-xl border p-0

@@ -6,6 +6,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { FormSignIn } from "../components/forms/FormSignIn";
 import { FormSignUp } from "../components/forms/FormSignUp";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/infra/contexts/auth/UseAuth";
+import { useNavigate } from "react-router-dom";
 
 interface InitialPageProps {
   name?: string;
@@ -28,14 +30,20 @@ export const InitialPage = ({
 }: InitialPageProps) => {
   const [signUpOpen, setSignUpOpen] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (user && profile) {
+      navigate(`/${user.username}`);
+    }
+
     form === "signUp" ? setSignUpOpen(true) : setSignUpOpen(false);
     form === "signIn" ? setSignInOpen(true) : setSignInOpen(false);
-  }, []);
+  }, [user, profile]);
 
   const AUTH_URL: string =
-    "https://accounts.spotify.com/authorize?client_id=3ac3788f57dc4ea3bccc70d37a4d8697&response_type=code&redirect_uri=http://localhost:3000/callback&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
+    "https://accounts.spotify.com/authorize?client_id=3ac3788f57dc4ea3bccc70d37a4d8697&response_type=code&redirect_uri=http://localhost:2222/callback&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
 
   return (
     <div className="bg-base text-contrast justify-center items-center flex fixed w-screen h-screen text-balance">
@@ -68,6 +76,7 @@ export const InitialPage = ({
               onClick={() => {
               
                 window.location.href = AUTH_URL;
+                console.log("initial Page");
               }}
               bg="bg-white"
             >

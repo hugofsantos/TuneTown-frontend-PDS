@@ -1,22 +1,22 @@
-import { Profile } from "./Profile";
 
 export type AuthProvider = { 
     isSignedIn?: boolean;
 }
 
 export type UserLogin = {
-  email: string;
+  login: string;
   password: string;
 };
 
 export type UserRegister =  {
-  name: string;
-  email: string;
   username: string;
+  email: string;
   password: string;
-  avatarUrl?: string;
-  refreshToken?: string;
-  accessToken?: string;
+  // name: string;
+  // email: string;
+  // avatarUrl?: string;
+  // refreshToken?: string;
+  // accessToken?: string;
 };
 
 export type userSpotifyToken = {

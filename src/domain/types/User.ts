@@ -9,7 +9,9 @@ export type User = {
 
 export type UserWithProfile = User & {
   id: string;
-  profile: Profile
+  username: string;
+  email: string;
+  profileId: string;
 }
 
 export type UserEntity = User & {

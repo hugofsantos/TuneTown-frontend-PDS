@@ -59,7 +59,7 @@ export const MenuLeft = ({
 
   return (
     <div
-      className="md:h-full md:w-[10%] 
+      className="md:h-full md:w-[20rem] 
       justify-around items-center flex 
       h-12 w-full absolute bottom-0 border-box 
       border border-stroke md:relative md:flex-col md:items-center

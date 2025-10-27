@@ -12,6 +12,7 @@ import { ProtectedComponent } from './infra/contexts/auth/ProtectedRoute.tsx';
 import { Feed } from './app/pages/Feed.tsx';
 import { TokenCallback } from './app/pages/TokenCallback.tsx';
 import { Toaster } from 'sonner';
+import { TuneetCard } from './app/pages/TuneetCard.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,16 @@ const router = createBrowserRouter([
       <ProtectedComponent>
         <ContainerCentral>
           <Profile />
+        </ContainerCentral>
+      </ProtectedComponent>
+    ),
+  },
+    {
+    path: "/tuneet/:tuneetId",
+    element: (
+      <ProtectedComponent>
+        <ContainerCentral>
+          <TuneetCard />
         </ContainerCentral>
       </ProtectedComponent>
     ),

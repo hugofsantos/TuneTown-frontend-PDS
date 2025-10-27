@@ -2,16 +2,51 @@ import { Comment } from "./Comment";
 import { Like } from "./Like";
 import { User } from "./User";
 
-export type Post = {
-  title: string;
-  content: string;
-  author: User;
-  likes: Like[];
-  comments: Comment[];
-};
+export type Tuneet = {
+  id: string;
+  authorId: string;
+  textContent: string;
+  tunableItem: {
+    plataformId: string;
+    title: string;
+    artist: string;
+    artworkUrl: string;
+    type: "MUSIC" | "ALBUM" | "PODCAST";
+    itemId: string;
+  },
+  itemId: string;
+  itemPlataform: string;
+  itemArtist: string;
+  itemArtworkUrl: string
+  tunableContent: string;
+  itemTitle: string;
+}
 
-export type PostEntity = Post & {
+export type PostEntity = Tuneet & {
   id: string;
   authorId: string;
   createdAt: string;
+}
+
+
+export type PageMetadados = { 
+  currentPage: number;
+  pageItens: number;
+  totalItens: number;
+  totalPages: number;
+  pageSize: number;
+};
+
+export type TuneetResponse = PageMetadados & {
+  itens: any[];
+};
+
+export type TuneetTrending = {
+  itemId: string;
+  title: string;
+  artist: string;
+  platformId: string;
+  itemType: string;
+  artworkUrl: string;
+  tuneetCount: number;
 }

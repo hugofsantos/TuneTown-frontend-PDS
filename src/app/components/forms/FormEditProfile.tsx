@@ -6,28 +6,30 @@ import { EditProfile } from "../../../domain/types/Profile";
 import { useAuth } from "../../../infra/contexts/auth/UseAuth";
 import { Photo } from "../Photo";
 import { TextArea } from "../TextArea";
+import FormPhotoUpload from "../PhotoButton";
 
 export const FormEditProfile = () => {
   const { register, handleSubmit } = useForm<EditProfile>();
-  const { user } = useAuth();
 
-  function sendSubmit(data: EditProfile) {}
+  function sendSubmit(data: EditProfile) {
+    // const response = await editProfileRequest(user!.id, data);
+    // console.log("Profile edited:", response);
+
+  }
 
   return (
     <form
       onSubmit={handleSubmit(sendSubmit)}
       className="flex flex-col space-y-5 px-6 py-5"
     >
-      <div className="flex flex-col space-y-4">
-        <div className="flex items-center gap-6 w-full ">
-          <Photo size="5" src={user?.profile.avatarUrl} />
-          <Input
-            label="Avatar"
-            {...register("avatarURL", { required: true })}
-          ></Input>
-        </div>
+      <div className="flex flex-col items-center space-y-4">
+      
+      <FormPhotoUpload />
 
-        <Input label="Nome" {...register("name", { required: true })} />
+          {/* <PhotoButton size="7" src={profile?.urlPhoto} /> */}
+
+
+        {/* <Input label="Nome" {...register("name", { required: true })} /> */}
         <TextArea
           label="Bio"
           height="16"
@@ -37,11 +39,11 @@ export const FormEditProfile = () => {
           label="Música favorita"
           {...register("favoriteSong", { required: true })}
         />
-        <Input
+        {/* <Input
           label="Senha"
           type="password"
           {...register("password", { required: true })}
-        />
+        /> */}
       </div>
 
       <Button type="submit">Editar</Button>

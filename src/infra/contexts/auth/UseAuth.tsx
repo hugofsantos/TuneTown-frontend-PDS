@@ -1,12 +1,16 @@
 import { createContext, useContext } from "react";
 import { UserWithProfile } from "../../../domain/types/User";
-import { UserRegister, userSpotifyToken } from "../../../domain/types/Auth";
+import { UserLogin, UserRegister, userSpotifyToken } from "../../../domain/types/Auth";
+import { Profile } from "@/domain/types/Profile";
+import { Tuneet } from "@/domain/types/Post";
 
 type AuthContextType = {
   user: UserWithProfile | null;
-  posts: any[];
+  posts: Tuneet[];
   loading: boolean;
-  handleLogin: (data: { email: string; password: string }) => Promise<void>;
+  profile?: Profile | null;
+  setProfile: (value: Profile | null) => void;
+  handleLogin: (data: UserLogin) => Promise<void>;
   handleRegister: (data: UserRegister) => Promise<void>;
   handleLogout: () => void;
   setPosts: (posts: any[]) => void;
@@ -17,6 +21,8 @@ export const AuthContext = createContext<AuthContextType | undefined>({
   user: null,
   loading: true,
   tokenSpotify: null,
+  profile: null,
+  setProfile: () => {},
   handleLogin: async () => {},
   handleRegister: async () => {},
   handleLogout: () => {},

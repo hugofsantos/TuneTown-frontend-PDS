@@ -8,7 +8,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 export const FormSignIn = () => {
-  const { user, loading, handleLogin } = useAuth();
+  const { user, profile, loading, handleLogin } = useAuth();
+  
   const {
     register,
     handleSubmit
@@ -52,7 +53,7 @@ function sendSubmit (data: UserLogin) {
       </Button>
 
       <div className="flex flex-col space-y-4">
-        <Input label="Email" {...register("email", { required: true })} />
+        <Input label="Login" {...register("login", { required: true })} />
         <Input
           label="Senha"
           type="password"

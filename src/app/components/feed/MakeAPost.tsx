@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../infra/contexts/auth/UseAuth";
+import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { Button } from "../Button";
 import { CloseButton } from "../CloseButton";
-import axios from "axios";
 import { FaSpotify } from "react-icons/fa";
 import * as Dialog from "@radix-ui/react-dialog";
+import { findSongByTitle } from "@/app/services/auth/findSongByTitle";
+import { Photo } from "../Photo";
+import { makeATuneet } from "@/app/services/auth/makeATuneet";
+import { toast } from "sonner";
 
 
 type track = {
@@ -22,110 +25,78 @@ type track = {
   id: string;
 };
 
-export const MakeAPost = () => {
+type Song = {
+  artist: string;
+  artworkUrl: string;
+  itemId: string;
+  itemType: string;
+  plataform: string;
+  title: string;
+}
+
+
+export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" | "podcast", onClose: () => void }) => {
   const { user, tokenSpotify, posts, setPosts } = useAuth();
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<any | null>([]);
-  const [searchClicked, setSearchClicked] = useState<any>();
+  const [searchResult, setSearchResult] = useState<Song[]>([]);
+  const [searchClicked, setSearchClicked] = useState<Song | null>(null);
   const [commentInput, setCommentInput] = useState<string>("");
 
   useEffect(() => {
-    setSearchResult(null);
-
-    const fetchData = async () => {
-      try {
-        console.log(tokenSpotify)
-        var result = await axios.get(
-          `https://api.spotify.com/v1/search?q=${searchInput}&type=track`,
-          {
-            headers: {
-              Authorization: `Bearer ${tokenSpotify}`,
-            },
-          }
-        );
-
-        setSearchResult(result);
-      } catch (error) {
-        console.error("There was an error!", error);
-
-
+    const buscarMusica = async () => {
+      if (searchInput.trim() === "") {
+        setSearchResult([]);
+        return;
       }
+      const result = await findSongByTitle(searchInput, itemType);
+
+      console.log(result)
+      setSearchResult(result);
     };
-    fetchData();
-  }, [searchInput, tokenSpotify]);
+
+    buscarMusica();
+
+  }, [searchInput]);
 
   async function makeAPost() {
-    const track: track = searchClicked;
+    const response = await makeATuneet(commentInput, searchClicked?.itemId, itemType);
 
-    setPosts([
-      {
-        content: commentInput,
-        track,
-        author: user?.name,
-        created_at: new Date().toISOString,
-      },
-      ...posts,
-    ]);
-    {
-      /**
-  const response = await axios.post("http://localhost:3333/posts", {
-    content: commentInput,
-    userId: user?.id,
-    trackId: searchClicked?.id,
-  });*/
-    }
-
+      toast.success("Tuneet criado com sucesso!");
+      setPosts([response, ...posts]);
+      onClose();
+    
   }
 
   return (
     <div className="flex justify-between flex-col w-full h-full box-border">
       <div className="flex w-full justify-between">
         <Dialog.Close asChild>
-          <CloseButton arial-label="Close" />
+          <CloseButton
+            onClick={onClose} aria-label="Close" />
         </Dialog.Close>
-        <p className="">@{user?.name}</p>
+        <p className="">@{user?.username}</p>
         <p className="opacity-0">
-          <CloseButton />
+          <CloseButton onClick={onClose} />
         </p>
       </div>
       <div className="border-b border-stroke" />
 
-      <div className="flex  flex-col h-full w-full justify-between ">
-        {searchClicked && (
-          <div className="flex gap-3">
-            <img
-              className="size-32"
-              src={searchClicked.album.images[0].url}
-            ></img>
-            <div>
-              <p>{searchClicked.artists[0].name}</p>
-              <p>{searchClicked.name}</p>
-              <p>{searchClicked.album.name}</p>
-              <p>
-                {Math.floor(searchClicked.duration_ms / 60000)}:
-                {String(
-                  Math.floor((searchClicked.duration_ms % 60000) / 1000)
-                ).padStart(2, "0")}
-              </p>
-            </div>
-          </div>
-        )}
-        <div
-          className="flex h-fit p-4 justify-center
+      <div
+        className="flex h-fit p-4 justify-center
          items flex-col "
-        >
-          <div
-            className="border-b border-stroke border-dotted 
+      >
+        <div
+          className="border-b border-stroke border-dotted 
           decoration-dotted w-full"
-          />
-          <div className="relative">
-            <input
-              placeholder="Buscar ou colar URL de áudio"
-              onChange={(event) => setSearchInput(event.target.value)}
-              className={`rounded-sm ${
-                searchClicked
-                  ? "h-6 text-sm  placeholder:text-lg"
-                  : "h-8 md:text-xl  placeholder:text-2xl"
+        />
+        <div className="relative">
+          <input
+            placeholder="Buscar ou colar URL de áudio"
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
+            className={`rounded-sm ${searchClicked
+                ? "h-6 text-sm  placeholder:text-lg"
+                : "h-8 md:text-xl  placeholder:text-2xl"
               } w-full text-start appearance-none 
           relative
           bg-transparent placeholder:text-theme sm:text-sm/6 
@@ -134,31 +105,61 @@ export const MakeAPost = () => {
           text-theme
           focus:outline-none
           font-bold`}
-            />
-            {searchResult && searchInput != "" && (
-              <div
-                className="absolute top-[calc(2rem+8px)] 
+          />
+
+          {searchResult && searchInput != "" && (
+            <div
+              className="absolute top-[calc(2rem+8px)] 
               w-[20rem] rounded-lg flex flex-col 
               shadow-sm p-3 shadow-theme bg-fume 
+              gap-y-2
               z-20 items-start overflow-auto h-[10rem] text-sm"
-              >
-                {searchResult?.data?.tracks?.items.map((item: any) => (
-                  <button
-                    onClick={() => setSearchClicked(item)}
-                    className="flex hover:text-theme transition-all duration-75"
-                    key={item.id}
-                  >
-                    <FaSpotify /> {item.artists[0].name} - {item.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div
-            className="border-b border-stroke border-dotted decoration-dotted
-           w-full"
-          />
+            >
+              {searchResult?.map((item: Song) => (
+                <button
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearchClicked(item)
+                  }}
+                  className="flex hover:text-theme transition-all duration-75"
+                  key={item.itemId}
+                >
+                  <Photo
+                    size="1"
+                    src={item.artworkUrl} />
+                  {item.artist} - {item.title}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+        <div
+          className="border-b border-stroke border-dotted decoration-dotted
+           w-full"
+        />
+      </div>
+
+      <div className="flex  flex-col h-full w-full justify-between">
+        {searchClicked && (
+          <div className="flex gap-3">
+            <img
+              className="size-32"
+              src={searchClicked.artworkUrl}
+            ></img>
+            <div>
+              <p>{searchClicked.artist}</p>
+              <p>{searchClicked.title}</p>
+              <p>{searchClicked.plataform}</p>
+              {/* <p>
+                {Math.floor(searchClicked.duration_ms / 60000)}:
+                {String(
+                  Math.floor((searchClicked.duration_ms % 60000) / 1000)
+                ).padStart(2, "0")}
+              </p> */}
+            </div>
+          </div>
+        )}
+
 
         <input
           placeholder="Comente aqui"

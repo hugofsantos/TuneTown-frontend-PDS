@@ -1,5 +1,5 @@
-import { UserRegister } from "../../../domain/types/Auth";
-import AuthGatewayHttp from "../../../infra/gateway/AuthGatewayHttp";
+import { UserRegister } from "@/domain/types/Auth";
+import AuthGatewayHttp from "@/infra/gateway/AuthGatewayHttp";
 import { toast } from 'sonner'
 
 export async function signUpRequest(userData: UserRegister) {

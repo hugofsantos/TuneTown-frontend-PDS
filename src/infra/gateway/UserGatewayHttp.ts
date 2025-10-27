@@ -1,14 +1,15 @@
-import { Profile } from "../../domain/types/Profile";
-import { User } from "../../domain/types/User";
+import { Profile } from "@/domain/types/Profile";
+import { User } from "@/domain/types/User";
 import AxiosAdapter from "../http/AxiosAdapter";
 import IHttpClient from "../http/IHttpClient";
+import AuthGatewayHttp from "./AuthGatewayHttp";
 
 export default class UserGatewayHttp {
   httpClient: IHttpClient;
   url: string;
 
   constructor() {
-    this.url = "http://localhost:3333/user";
+    this.url = `${import.meta.env.VITE_API_URL}`;
     this.httpClient = new AxiosAdapter();
   }
 
@@ -29,18 +30,38 @@ export default class UserGatewayHttp {
     return response.data;
   }
 
-  async signUp(userData: any): Promise<any> {
-    const response = await this.httpClient.post(`${this.url}/user/`, userData);
-    return response.data;
+  
+  async findUserProfile(id: string): Promise<any> {
+    try {
+      const response = await this.httpClient.get(`${this.url}/profile/${id}`);
+      return response;
+    } catch (error: any) {
+      console.error(`Error in findUserProfile: ${error}`);
+      throw new Error(error.response.data.message);
+    }
   }
 
-  async signIn(userData: any): Promise<any> {
-    const response = await this.httpClient.post(
-      `${this.url}/user/signin`,
-      userData
-    );
-    return response.data;
+  async createProfile(userId: string): Promise<any> {
+    try {
+      const response = await this.httpClient.post(`${this.url}/profile`, { userId });
+      return response;
+    } catch (error: any) {
+      console.error(`Error in createProfile: ${error}`);
+      throw new Error(error.response.data.message);
+    }
   }
+
+  async uploadPhoto(profileId: string, formData: FormData): Promise<any> {
+    try {
+      const response = await this.httpClient.post(`${this.url}/profile/${profileId}/photo`, formData);
+      // response já é o data correto
+      return response;
+    } catch (error: any) {
+      console.error(`Error in uploadPhoto: ${error}`);
+      throw new Error(error.response?.data?.message || 'Erro ao enviar foto');
+    }
+  }
+
 
   async updateUser(userData: any): Promise<any> {
     const response = await this.httpClient.put(`${this.url}/user/`, userData);
