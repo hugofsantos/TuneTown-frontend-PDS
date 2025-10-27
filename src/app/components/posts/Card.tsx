@@ -63,6 +63,7 @@ export function Card({ author, authorImg, content, track }: CardProps) {
             <p> {
             user?.id === track?.authorId && (
               <TbTrash 
+              
               className=" right-2 text-slate-300 top-2 cursor-pointer text-contrast/50 hover:text-red-500"
               />
             )

@@ -74,14 +74,14 @@ export const TuneetCard = () => {
 
 
                                     <span className="text-xs flex justify-between text-theme font-bold"><p>@{comment.authorId}</p>
-                                    <p>{new Date(comment.createdAt).toLocaleString()}</p></span>
+                                        <p>{new Date(comment.createdAt).toLocaleString()}</p></span>
                                     <span className="text-xs text-contrast/50 flex justify-between"> {comment.contentText}</span>
                                     <span className="flex justify-end">{
                                         profile?.id === comment.authorId && (
-                                            <TbTrash className=" right-2 text-slate-300 top-2 cursor-pointer text-contrast/50 hover:text-red-500" 
+                                            <TbTrash className=" right-2 text-slate-300 top-2 cursor-pointer text-contrast/50 hover:text-red-500"
                                             />
                                         )
-}</span>
+                                    }</span>
                                 </div>
                             ))
                         )}
