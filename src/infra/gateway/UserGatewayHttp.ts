@@ -30,7 +30,6 @@ export default class UserGatewayHttp {
     return response.data;
   }
 
-  
   async findUserProfile(id: string): Promise<any> {
     try {
       const response = await this.httpClient.get(`${this.url}/profile/${id}`);
@@ -43,7 +42,9 @@ export default class UserGatewayHttp {
 
   async createProfile(userId: string): Promise<any> {
     try {
-      const response = await this.httpClient.post(`${this.url}/profile`, { userId });
+      const response = await this.httpClient.post(`${this.url}/profile`, {
+        userId,
+      });
       return response;
     } catch (error: any) {
       console.error(`Error in createProfile: ${error}`);
@@ -53,18 +54,34 @@ export default class UserGatewayHttp {
 
   async uploadPhoto(profileId: string, formData: FormData): Promise<any> {
     try {
-      const response = await this.httpClient.post(`${this.url}/profile/${profileId}/photo`, formData);
+      const response = await this.httpClient.post(
+        `${this.url}/profile/${profileId}/photo`,
+        formData
+      );
       // response já é o data correto
       return response;
     } catch (error: any) {
       console.error(`Error in uploadPhoto: ${error}`);
-      throw new Error(error.response?.data?.message || 'Erro ao enviar foto');
+      throw new Error(error.response?.data?.message || "Erro ao enviar foto");
     }
   }
-
 
   async updateUser(userData: any): Promise<any> {
     const response = await this.httpClient.put(`${this.url}/user/`, userData);
     return response.data;
+  }
+
+  async getTuneScore(userId1: string, userId2: string): Promise<any> {
+    try {
+      const response = await this.httpClient.get(
+        `${this.url}/tunescore/${userId1}/${userId2}`
+      );
+      return response;
+    } catch (error: any) {
+      console.error(`Error in getTuneScore: ${error}`);
+      throw new Error(
+        error.response?.data?.message || "Erro ao buscar TuneScore"
+      );
+    }
   }
 }

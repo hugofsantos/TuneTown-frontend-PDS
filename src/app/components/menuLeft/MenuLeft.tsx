@@ -8,34 +8,29 @@ import {
   profile2,
   foruns,
   foruns2,
-  more, more2,
+  more,
+  more2,
   config,
-  config2
 } from "../../assets/left_menu";
 import logo_small_purple from "../../assets/logo_small_purple.svg";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../infra/contexts/auth/UseAuth";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../Sheet";
-
 
 type MenuLeftProps = {
   buttonSelected: string;
   setButtonSelected: (value: string) => void;
 };
 
-
 export const MenuLeft = ({
   buttonSelected,
   setButtonSelected,
 }: MenuLeftProps) => {
-
   const [theme, setTheme] = useState<string>("light");
   const { user } = useAuth();
 
   useEffect(() => {
     setTheme(localStorage.getItem("theme")!);
   }, []);
-
 
   const items = {
     home: { src: theme === "light" ? home2 : home, alt: "home", to: "/home" },

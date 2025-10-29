@@ -1,5 +1,4 @@
 import { UserRegister } from "./Auth";
-import { Tuneet } from "./Post";
 import { UserEntity } from "./User";
 
 export type Profile = {
@@ -18,7 +17,7 @@ export type Profile = {
 export type Photo = {
   id: string;
   url: string;
-}
+};
 
 export type ProfileEntity = Profile & {
   id: number;
@@ -33,5 +32,4 @@ export type EditProfile = UserRegister & {
   // password: null;
 };
 
-export type EditConfig = UserRegister & {
-};
+export type EditConfig = UserRegister & {};
