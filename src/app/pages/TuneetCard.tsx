@@ -25,6 +25,7 @@ export const TuneetCard = () => {
     const [tuneet, setTuneet] = useState<Tuneet | null>(null);
     const [contentText, setContentText] = useState<string>("");
     const [comments, setComments] = useState<Comment[]>([]);
+    const [likes, setLikes] = useState<any>([]);
 
     const { tuneetId } = useParams();
 
@@ -38,11 +39,13 @@ export const TuneetCard = () => {
         if (!tuneetId) return;
         const tuneet = await findTuneetById(tuneetId);
         const comments = await findTunetsComments(tuneetId);
+        const response = await findTunetsInfos(tuneetId);
         setTuneet(tuneet || null);
+        setLikes(response?.content || []);
         setComments(comments.content || []);
-
-        console.log(comments.content)
     }
+
+
 
     async function commentTuneet() {
         const comment = await makeAComment(tuneetId!, profile!.id, contentText);
@@ -55,8 +58,8 @@ export const TuneetCard = () => {
             <div className="h-full md:max-w-2xl w-full rounded-lg border-box relative border-r-[1px] 
        border-stroke overflow-hidden flex flex-col items-center overflow-y-auto">
                 <Card
-                    author={tuneet?.authorId || ""}
-                    authorImg={tuneet?.itemArtworkUrl || ""}
+                    author={tuneet?.author.username || ""}
+                    authorImg={tuneet?.author.profile.photo.url || ""}
                     content={tuneet?.textContent || ""}
                     track={tuneet} />
 
@@ -74,7 +77,7 @@ export const TuneetCard = () => {
 
 
                                     <span className="text-xs flex justify-between text-theme font-bold"><p>@{comment.authorId}</p>
-                                        <p>{new Date(comment.createdAt).toLocaleString()}</p></span>
+                                        <p>{new Date(comment?.createdAt).toLocaleString()}</p></span>
                                     <span className="text-xs text-contrast/50 flex justify-between"> {comment.contentText}</span>
                                     <span className="flex justify-end">{
                                         profile?.id === comment.authorId && (

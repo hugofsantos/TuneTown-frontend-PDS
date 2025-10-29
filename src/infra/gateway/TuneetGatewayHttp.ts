@@ -32,8 +32,6 @@ export default class TuneetGatewayHttp {
     }).toString();
     } 
 
-    console.log("Fetching tuneets with params:", params);
-
    return await this.httpClient.get(`${this.url}/author/${userId}?${params}`);
   }
 

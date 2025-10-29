@@ -59,12 +59,14 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
   }, [searchInput]);
 
   async function makeAPost() {
-    const response = await makeATuneet(commentInput, searchClicked?.itemId, itemType);
-
+    try {
+      const response = await makeATuneet(commentInput, searchClicked?.itemId, itemType);
       toast.success("Tuneet criado com sucesso!");
-      setPosts([response, ...posts]);
+       setPosts([response, ...posts]);
+    } catch (e) {
+      toast.error("Erro ao criar Tuneet");
+    } 
       onClose();
-    
   }
 
   return (

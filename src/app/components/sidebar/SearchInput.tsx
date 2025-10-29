@@ -2,6 +2,11 @@
 import { IoIosSearch } from "react-icons/io";
 
 const SearchInput = () => {
+  
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value;
+  }
+
   return (
     <div className="relative w-[95%] group ">
       <IoIosSearch

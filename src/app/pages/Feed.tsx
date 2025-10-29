@@ -9,7 +9,6 @@ export const Feed = () => {
   const { user, profile, posts } = useAuth();
 
   useEffect(() => {
-    console.log("Posts updated:", posts);
   }, [posts]);
 
     return (
@@ -23,9 +22,9 @@ export const Feed = () => {
         <ContainerPosts>
           {posts.length > 0 && posts.map((tuneet, index) => (
             <Card
-              authorImg={profile?.urlPhoto}
+              authorImg={tuneet?.author?.profile?.photo.url}
               key={index}
-              author={tuneet?.authorId}
+              author={tuneet?.author?.username}
               content={tuneet?.textContent}
               created_at={tuneet?.id}
               track={tuneet}

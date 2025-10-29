@@ -23,14 +23,12 @@ const router = createBrowserRouter([
   {
     path: "/:profileId",
     element: (
-      <ProtectedComponent>
         <ContainerCentral>
           <Profile />
         </ContainerCentral>
-      </ProtectedComponent>
     ),
   },
-    {
+  {
     path: "/tuneet/:tuneetId",
     element: (
       <ProtectedComponent>

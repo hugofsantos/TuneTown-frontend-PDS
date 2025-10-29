@@ -37,11 +37,11 @@ export default function AuthProvider({
       httpClient.setHeaders({ Authorization: `Bearer ${token}` });
     }
 
+    if (profile && profile !== "undefined") {
     setUser(user ? JSON.parse(user) : null);
     setProfile(profile ? JSON.parse(profile) : null);
 
-    console.log("AuthProvider mounted, user:", user, "token:", token);
-
+    }
     setLoading(false);
   }, []);
 

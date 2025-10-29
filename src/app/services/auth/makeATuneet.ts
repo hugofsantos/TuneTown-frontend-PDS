@@ -6,10 +6,8 @@ export async function makeATuneet(comment: string, trackId: string | undefined, 
 
     try {
         const response = await tuneetGatewayHttp.makeATuneet(comment, trackId, itemType);
-    
         return response;
     } catch (error: any) {
-        console.error("Erro ao fazer requisição:", error);
-        toast.error("Ocorreu um erro, por favor tente novamente.");
+       throw new Error(error.message);
     }
 }

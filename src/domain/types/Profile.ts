@@ -7,10 +7,18 @@ export type Profile = {
   bio?: string | null;
   favoriteSong?: string | null;
   urlPhoto?: string | null;
-  posts: Tuneet[] | null;
+  // posts: Tuneet[] | null;
   followers: UserEntity[] | null;
   following: UserEntity[] | null;
+  totalFollowers: number;
+  totalFollowing: number;
+  photo: Photo;
 };
+
+export type Photo = {
+  id: string;
+  url: string;
+}
 
 export type ProfileEntity = Profile & {
   id: number;

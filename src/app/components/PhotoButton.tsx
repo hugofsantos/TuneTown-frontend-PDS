@@ -7,12 +7,12 @@ export default function FormPhotoUpload() {
   const { profile, setProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [preview, setPreview] = useState<string | null>(profile?.urlPhoto ?? null);
+  const [preview, setPreview] = useState<string | null>(profile?.photo.url ?? null);
 
   // Atualiza preview se profile mudar (ex: ao editar perfil ou logar outro usuário)
   useEffect(() => {
-    setPreview(profile?.urlPhoto ?? null);
-  }, [profile?.urlPhoto]);
+    setPreview(profile?.photo.url ?? null);
+  }, [profile?.photo.url]);
 
   const userGatewayHttp = new UserGatewayHttp();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -127,7 +127,7 @@ export default function FormPhotoUpload() {
 
       <button
         onClick={handleSubmit}
-        disabled={loading || !preview || preview === profile?.urlPhoto}
+        disabled={loading || !preview || preview === profile?.photo.url}
         className="px-4 py-2 rounded-lg bg-blue-600 disabled:bg-gray-400 text-white text-sm"
       >
         Salvar Foto

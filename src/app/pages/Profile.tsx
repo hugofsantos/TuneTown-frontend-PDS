@@ -5,6 +5,7 @@ import { ProfileMenu } from "../components/profile/ProfileMenu";
 import { useEffect, useRef, useState } from "react";
 import { findTuneetsByUserId } from "../services/auth/findTuneetsByUserId";
 import { PageMetadados, TuneetResponse } from "@/domain/types/Post";
+import { useParams } from "react-router-dom";
 
 export const Profile = () => {
   const { user, profile, posts, setPosts } = useAuth();
@@ -21,6 +22,7 @@ export const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
+ const { profileId } = useParams();
 
  async function fetchProfilePosts(page = 0) {
   setLoading(true);
@@ -32,9 +34,19 @@ export const Profile = () => {
   }
 
   const metadados = { ...pageMetadados, currentPage: page };
-  const tuneets: TuneetResponse = await findTuneetsByUserId(user!.id, metadados);
+let tuneets: TuneetResponse;
 
-  setPosts(prev => [...prev, ...tuneets.itens]);
+  if (user?.username ==profileId) {
+      tuneets = await findTuneetsByUserId(user!.username, metadados);
+  } else {
+      tuneets = await findTuneetsByUserId(profileId!, metadados);
+  }
+
+  setPosts(prev => {
+    const ids = new Set(prev.map(t => t.id));
+    const novos = tuneets.itens.filter(t => !ids.has(t.id));
+    return [...prev, ...novos];
+  });
 
   const newMetadados: PageMetadados = {
     totalItens: tuneets.totalItens,
@@ -50,7 +62,7 @@ export const Profile = () => {
 }
 
   useEffect(() => {
-    fetchProfilePosts(0); // primeiro carregamento
+    fetchProfilePosts(0); 
   }, []);
 
   useEffect(() => {
@@ -83,7 +95,7 @@ export const Profile = () => {
               return (
                 <Card
                   key={tuneet.id || index}
-                  authorImg={profile?.urlPhoto}
+                  authorImg={tuneet.author.profile?.photo.url}
                   author={tuneet.authorId}
                   content={tuneet.textContent}
                   track={tuneet}

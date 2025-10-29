@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Photo } from "../Photo";
 
 export const ProfileMenu = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, posts } = useAuth();
   const [selectedButton, setSelectedButton] = useState<string>("posts");
   const items = ["posts", "foruns", "curtidas"];
   
@@ -28,7 +28,7 @@ export const ProfileMenu = () => {
         <div className="flex justify-between  h-[84%] px-6 pt-4 h-">
           <div className="flex flex-row items-start  w-1/2">
             <div className="flex gap-2 items-center ">
-              <Photo src={profile?.urlPhoto} size="4" />
+              <Photo src={user?.profile?.photo.url} size="4" />
               <div
                 className="w-24 z-10 top-[4.5rem] left-16 absolute h-8
                      bg-fume rounded-tr-xl rounded-bl-xl rounded-br-xl border p-0
@@ -40,7 +40,7 @@ export const ProfileMenu = () => {
                 <span>
                   listen now <b> beautiful thins - benson boone</b>
                 </span>
-                <span>251 tuners shared</span>
+                <span> {posts.length} tuners shared</span>
               </div>
             </div>
           </div>

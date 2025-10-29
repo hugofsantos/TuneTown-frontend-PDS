@@ -1,6 +1,6 @@
 import { Comment } from "./Comment";
 import { Like } from "./Like";
-import { User } from "./User";
+import { User, UserWithProfile } from "./User";
 
 export type Tuneet = {
   id: string;
@@ -20,6 +20,13 @@ export type Tuneet = {
   itemArtworkUrl: string
   tunableContent: string;
   itemTitle: string;
+  authorName: string;
+  createdAt: string;
+  totalLikes: number;
+  totalComments: number;
+  comments: Comment[];
+  likes: Like[];
+  author: UserWithProfile;
 }
 
 export type PostEntity = Tuneet & {

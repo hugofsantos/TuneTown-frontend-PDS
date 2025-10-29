@@ -1,13 +1,10 @@
-
 import { Photo } from "../Photo";
-import { IoHeartOutline } from "react-icons/io5";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { HeartButton } from "./HeartButton";
 import { Tuneet } from "@/domain/types/Post";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { likeATuneet } from "@/app/services/auth/likeATuneet";
-import { findTunetsInfos } from "@/app/services/auth/findInfoTuneet";
 import { useNavigate } from "react-router-dom";
 import { TbTrash } from "react-icons/tb";
 
@@ -22,18 +19,11 @@ interface CardProps {
 
 export function Card({ author, authorImg, content, track }: CardProps) {
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState<any>([]);
+
   const { profile, user} = useAuth();
 
   const navigate = useNavigate();
-  useEffect(() => {
-    fetchTuneet();
-  }, [liked]);
 
-  async function fetchTuneet() {
-    const response = await findTunetsInfos(track.id);
-    setLikes(response?.content || []);
-  }
 
   async function likeTuneet() {
     const response = await likeATuneet(track.id, profile!.id);
@@ -69,7 +59,12 @@ export function Card({ author, authorImg, content, track }: CardProps) {
             )
           }</p>
            </span>
-          <span className="text-xs text-copacity_25">{new Date().toISOString()}</span>
+          <span className="text-xs text-copacity_25">
+            {track?.createdAt ? new Date(track?.createdAt).toLocaleString('pt-BR', {
+              day: '2-digit', month: '2-digit', year: '2-digit',
+              hour: '2-digit', minute: '2-digit'
+            }) : ''}
+          </span>
           
         </div>
       </div>
@@ -99,13 +94,14 @@ export function Card({ author, authorImg, content, track }: CardProps) {
         <HeartButton
           liked={liked}
           setLiked={likeTuneet}
-          likes={likes}
+          likes={track?.totalLikes}
         />
         <button
           className="hover:text-blue-500
-        hover:border-b-violet-600"
+        hover:border-b-violet-600 flex items-center gap-1"
         >
           <FaRegCommentAlt />
+          {track?.totalComments > 0 ? <span className="ml-1 text-sm">{track?.totalComments}</span> : <p>0</p>}
         </button>
       </div>
     </div>
