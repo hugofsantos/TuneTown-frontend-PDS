@@ -10,6 +10,19 @@ function forceLogout() {
   window.location.reload();
 }
 export default class AxiosAdapter implements HttpClient {
+  async delete(url: string): Promise<any> {
+    try {
+      const res = await axios.delete(url);
+      return res.data;
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        toast.error("Sessão expirada ou acesso não autorizado. Faça login novamente.");
+        forceLogout();
+      }
+      console.error(`Error in delete: ${error}`);
+      throw error;
+    }
+  }
   
   async get(url: string): Promise<any> {
     try {

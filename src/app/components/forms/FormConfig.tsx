@@ -4,10 +4,12 @@ import { SheetClose, SheetFooter, SheetHeader, SheetTitle } from "../Sheet";
 import { useForm } from "react-hook-form";
 import { EditConfig } from "../../../domain/types/Profile";
 import { useAuth } from "../../../infra/contexts/auth/UseAuth";
+import { useNavigate } from "react-router-dom";
 export const FormConfig = () => {
   const { register, handleSubmit } = useForm<EditConfig>();
   const { user } = useAuth();
 
+  const navigate = useNavigate();
   function sendSubmit(data: EditConfig) {}
 
   return (
@@ -50,7 +52,16 @@ export const FormConfig = () => {
         </SheetClose>
       </SheetFooter>
       <div className="mt-auto">
-        <Button>Sair</Button>
+        <Button
+        onClick={()=> {
+ localStorage.clear();
+ localStorage.removeItem("tunetown@token");
+ localStorage.removeItem("tunetown@user");
+ localStorage.removeItem("tunetown@profile");
+
+ navigate("/", { replace: true });
+        }}
+        >Sair</Button>
       </div>
     </div>
   );

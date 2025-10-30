@@ -58,11 +58,11 @@ export const TuneScoreButton: React.FC<TuneScoreButtonProps> = ({
           }
         }}
         onBlur={() => setShowTooltip(false)}
-        className={`flex items-center gap-2 px-4 py-2 rounded-sm border border-theme 
-        bg-transparent text-theme font-semibold transition-all duration-200
-        hover:bg-theme hover:text-contrast hover:shadow-lg
-        disabled:opacity-50 disabled:cursor-not-allowed
-        ${className}`}
+            className={`flex items-center gap-1 px-2 py-1 rounded-full border border-theme 
+            bg-fume text-theme font-medium transition-all duration-150 shadow-sm
+            hover:bg-theme hover:text-fume hover:shadow-md
+            disabled:opacity-60 disabled:cursor-not-allowed
+            ${className}`}
       >
         <TbMusicHeart className={`text-xl ${loading ? "animate-pulse" : ""}`} />
         <span>

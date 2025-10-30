@@ -23,7 +23,6 @@ export default function AuthProvider({
   const [tokenSpotify, setTokenSpotify] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState<string>("");
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
 
   const httpClient = new AxiosAdapter();
 
@@ -102,9 +101,7 @@ export default function AuthProvider({
         handleLogin,
         handleLogout,
         tokenSpotify,
-        handleRegister,
-        setPosts,
-        posts
+        handleRegister
       }}
     >
       {children}

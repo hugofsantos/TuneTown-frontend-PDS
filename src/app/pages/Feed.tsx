@@ -2,10 +2,13 @@ import { Card } from "../components/posts/Card";
 import { MenuFeed } from "../components/feed/menuTop/MenuFeed";
 import { ContainerPosts } from "../components/feed/ContainerPosts";
 import { useAuth } from "../../infra/contexts/auth/UseAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Tuneet } from "@/domain/types/Post";
 
 export const Feed = () => {
-  const { user, profile, posts } = useAuth();
+  const { user, profile } = useAuth();
+
+  const [posts, setPosts] = useState<Tuneet[]>([]);
 
   useEffect(() => {}, [posts]);
 

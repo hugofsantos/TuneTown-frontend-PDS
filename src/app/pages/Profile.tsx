@@ -6,9 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import { findTuneetsByUserId } from "../services/auth/findTuneetsByUserId";
 import { PageMetadados, TuneetResponse } from "@/domain/types/Post";
 import { useParams } from "react-router-dom";
+import { UserWithProfile } from "@/domain/types/User";
+import { searchProfileByUsername } from "../services/auth/findProfileByUsername";
 
 export const Profile = () => {
-  const { user, profile, posts, setPosts } = useAuth();
+  const { user, profile } = useAuth();
   const [pageMetadados, setPageMetadados] = useState<PageMetadados>({
     currentPage: 1,
     pageItens: 0,
@@ -18,9 +20,12 @@ export const Profile = () => {
   });
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [userProfile, setUserProfile] = useState<any | null>(user);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const { profileId } = useParams();
+
 
   async function fetchProfilePosts(page = 0) {
     setLoading(true);
@@ -33,12 +38,10 @@ export const Profile = () => {
 
     const metadados = { ...pageMetadados, currentPage: page };
     let tuneets: TuneetResponse;
+    console.log("fetching for ", profileId);
 
-    if (user?.username == profileId) {
-      tuneets = await findTuneetsByUserId(user!.username, metadados);
-    } else {
-      tuneets = await findTuneetsByUserId(profileId!, metadados);
-    }
+ 
+    tuneets = await findTuneetsByUserId(profileId!, metadados);
 
     const ids = new Set(posts.map((t) => t.id));
     const novos = tuneets.itens.filter((t) => !ids.has(t.id));
@@ -58,8 +61,31 @@ export const Profile = () => {
   }
 
   useEffect(() => {
+    // Limpa posts e metadados ao trocar de perfil
+    setPosts([]);
+    setPageMetadados({
+      currentPage: 1,
+      pageItens: 0,
+      totalItens: 0,
+      totalPages: 1,
+      pageSize: 10,
+    });
+    setHasMore(true);
     fetchProfilePosts(0);
-  }, []);
+    fetchUserProfile();
+
+  }, [profileId]);
+
+
+  async function fetchUserProfile() {
+    if (!profileId) return;
+
+    const userProfile = await searchProfileByUsername(profileId);
+
+    console.log("userProfile", userProfile);
+    if (!userProfile) return;
+    setUserProfile(userProfile);
+  }
 
   useEffect(() => {
     if (!loaderRef.current || !hasMore || loading) return;
@@ -86,9 +112,10 @@ export const Profile = () => {
         <ProfileMenu
           isOwner={Boolean(profile && profileId === user?.username)}
           isLoggedUser={Boolean(user)}
-          username={profileId!}
+          userId={userProfile?.profileId}
+          username={userProfile?.username}
           amountTuneets={pageMetadados.totalItens}
-          photo_url={profile?.photo?.url || ""}
+          photo_url={userProfile?.photoUrl || ""}
         />
 
         <ContainerPosts>

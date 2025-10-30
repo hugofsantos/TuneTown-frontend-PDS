@@ -1,5 +1,5 @@
 import { Profile } from "@/domain/types/Profile";
-import { User } from "@/domain/types/User";
+import { User, UserWithProfile } from "@/domain/types/User";
 import AxiosAdapter from "../http/AxiosAdapter";
 import IHttpClient from "../http/IHttpClient";
 import AuthGatewayHttp from "./AuthGatewayHttp";
@@ -30,12 +30,50 @@ export default class UserGatewayHttp {
     return response.data;
   }
 
+    async searchProfileByUsername (username: string): Promise<any> {
+    const response = await this.httpClient.get(
+      `${this.url}/user/with-profile/username/${username}`
+    );
+    return response;
+  }
+
+async followUser(followerId: string, followedId: string): Promise<any> {
+  const response = await this.httpClient.post(
+    `${this.url}/follows/${followerId}/follow/${followedId}`
+  );
+  return response;
+}
+
+async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
+  const response = await this.httpClient.delete(
+    `${this.url}/follows/${followerId}/unfollow/${followedId}`
+  );
+  return response;
+}
+
+
   async findUserProfile(id: string): Promise<any> {
     try {
       const response = await this.httpClient.get(`${this.url}/profile/${id}`);
       return response;
     } catch (error: any) {
       console.error(`Error in findUserProfile: ${error}`);
+      throw new Error(error.response.data.message);
+    }
+  }
+
+    async searchProfiles(query: string): Promise<any> {
+    try {
+
+       const params = new URLSearchParams({
+        query
+    }).toString();
+
+      const response = await this.httpClient.get(`${this.url}/user/with-profile/search-by-username-part/${query}`);
+
+      return response.itens;
+    } catch (error: any) {
+      console.error(`Error in searchProfiles: ${error}`);
       throw new Error(error.response.data.message);
     }
   }
