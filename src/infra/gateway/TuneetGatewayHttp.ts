@@ -32,7 +32,7 @@ export default class TuneetGatewayHttp {
     }).toString();
     } 
 
-   return await this.httpClient.get(`${this.url}/author/${userId}?${params}`);
+   return await this.httpClient.get(`${this.url}/author/${userId}/resume?${params}`);
   }
 
   async findTuneetById(tuneetId: string): Promise<any> {

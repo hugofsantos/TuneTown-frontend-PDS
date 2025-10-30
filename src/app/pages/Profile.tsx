@@ -27,7 +27,7 @@ export const Profile = () => {
   const { profileId } = useParams();
 
 
-  async function fetchProfilePosts(page = 0) {
+  async function fetchProfilePosts(page = 0, userId?: string) {
     setLoading(true);
 
     if (posts.length > 0 && posts.length === pageMetadados?.totalItens) {
@@ -37,11 +37,12 @@ export const Profile = () => {
     }
 
     const metadados = { ...pageMetadados, currentPage: page };
-    let tuneets: TuneetResponse;
-    console.log("fetching for ", profileId);
+    let tuneets: any;
+    console.log("fetching for ", userId);
 
- 
-    tuneets = await findTuneetsByUserId(profileId!, metadados);
+    if (userId != undefined) {
+      tuneets = await findTuneetsByUserId(userId!, metadados);
+  
 
     const ids = new Set(posts.map((t) => t.id));
     const novos = tuneets.itens.filter((t) => !ids.has(t.id));
@@ -54,9 +55,11 @@ export const Profile = () => {
       pageItens: tuneets.pageItens,
       pageSize: tuneets.pageSize,
     };
+    
 
     setPageMetadados(newMetadados);
     setHasMore(newMetadados.currentPage < newMetadados.totalPages);
+      }
     setLoading(false);
   }
 
@@ -71,12 +74,12 @@ export const Profile = () => {
       pageSize: 10,
     });
     setHasMore(true);
-    fetchProfilePosts(0);
     fetchUserProfile();
-
+  
   }, [profileId]);
 
 
+  
   async function fetchUserProfile() {
     if (!profileId) return;
 
@@ -85,6 +88,8 @@ export const Profile = () => {
     console.log("userProfile", userProfile);
     if (!userProfile) return;
     setUserProfile(userProfile);
+    
+    fetchProfilePosts(0, userProfile.userId);
   }
 
   useEffect(() => {
@@ -124,8 +129,8 @@ export const Profile = () => {
               return (
                 <Card
                   key={tuneet.id || index}
-                  authorImg={tuneet.author.profile?.urlPhoto || ""}
-                  author={tuneet.author.username!}
+                  authorImg={tuneet.urlPhoto || ""}
+                  author={tuneet.username!}
                   content={tuneet.textContent}
                   track={tuneet}
                 />

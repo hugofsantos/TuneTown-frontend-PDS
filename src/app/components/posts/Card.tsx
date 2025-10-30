@@ -12,7 +12,7 @@ import { TbTrash } from "react-icons/tb";
 interface CardProps {
   author: string;
   authorImg?: string;
-  track: Tuneet;
+  track: any;
   content: string;
   children?: React.ReactNode;
 }
@@ -46,7 +46,7 @@ export function Card({ author, authorImg, content, track }: CardProps) {
     rounded-lg`}
     >
       <div className="flex w-full h-[30%] items-center gap-2">
-        <Photo size="1.9" src={authorImg} />
+        <Photo size="1.9" src={track.urlPhoto} />
         <div className="flex flex-col w-full text-sm">
           <span className="flex w-full justify-between ">
             <p>@{author}</p>
@@ -74,11 +74,11 @@ export function Card({ author, authorImg, content, track }: CardProps) {
         <div className="w-full bg-copacity_25 rounded-lg p-4">
           <div className="flex gap-3">
             {" "}
-            <img className="w-32 h-32 object-cover" src={track?.itemArtworkUrl} alt={track?.itemTitle} />
+            <img className="w-32 h-32 object-cover" src={track?.tunableItemArtworkUrl} alt={track?.tunableItemTitle} />
 
             <div>
-              <p>{track?.itemArtist}</p>
-              <p>{track?.itemTitle}</p>
+              <p>{track?.tunableItemArtist}</p>
+              <p>{track?.tunableItemTitle}</p>
               {/* <p>
                 {Math.floor(track?.duration_ms / 60000)}:
                 {String(
