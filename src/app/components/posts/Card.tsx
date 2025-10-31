@@ -8,7 +8,6 @@ import { likeATuneet } from "@/app/services/auth/likeATuneet";
 import { useNavigate } from "react-router-dom";
 import { TbTrash } from "react-icons/tb";
 
-
 interface CardProps {
   author: string;
   authorImg?: string;
@@ -20,10 +19,9 @@ interface CardProps {
 export function Card({ author, authorImg, content, track }: CardProps) {
   const [liked, setLiked] = useState(false);
 
-  const { profile, user} = useAuth();
+  const { profile, user } = useAuth();
 
   const navigate = useNavigate();
-
 
   async function likeTuneet() {
     const response = await likeATuneet(track.id, profile!.id);
@@ -50,22 +48,24 @@ export function Card({ author, authorImg, content, track }: CardProps) {
         <div className="flex flex-col w-full text-sm">
           <span className="flex w-full justify-between ">
             <p>@{author}</p>
-            <p> {
-            user?.id === track?.authorId && (
-              <TbTrash 
-              
-              className=" right-2 text-slate-300 top-2 cursor-pointer text-contrast/50 hover:text-red-500"
-              />
-            )
-          }</p>
-           </span>
-          <span className="text-xs text-copacity_25">
-            {track?.createdAt ? new Date(track?.createdAt).toLocaleString('pt-BR', {
-              day: '2-digit', month: '2-digit', year: '2-digit',
-              hour: '2-digit', minute: '2-digit'
-            }) : ''}
+            <p>
+              {" "}
+              {user?.id === track?.authorId && (
+                <TbTrash className=" right-2 text-slate-300 top-2 cursor-pointer text-contrast/50 hover:text-red-500" />
+              )}
+            </p>
           </span>
-          
+          <span className="text-xs text-copacity_25">
+            {track?.createdAt
+              ? new Date(track?.createdAt).toLocaleString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : ""}
+          </span>
         </div>
       </div>
 
@@ -74,8 +74,11 @@ export function Card({ author, authorImg, content, track }: CardProps) {
         <div className="w-full bg-copacity_25 rounded-lg p-4">
           <div className="flex gap-3">
             {" "}
-            <img className="w-32 h-32 object-cover" src={track?.tunableItemArtworkUrl} alt={track?.tunableItemTitle} />
-
+            <img
+              className="w-32 h-32 object-cover"
+              src={track?.tunableItemArtworkUrl}
+              alt={track?.tunableItemTitle}
+            />
             <div>
               <p>{track?.tunableItemArtist}</p>
               <p>{track?.tunableItemTitle}</p>
@@ -101,7 +104,11 @@ export function Card({ author, authorImg, content, track }: CardProps) {
         hover:border-b-violet-600 flex items-center gap-1"
         >
           <FaRegCommentAlt />
-          {track?.totalComments > 0 ? <span className="ml-1 text-sm">{track?.totalComments}</span> : <p>0</p>}
+          {track?.totalComments > 0 ? (
+            <span className="ml-1 text-sm">{track?.totalComments}</span>
+          ) : (
+            <p>0</p>
+          )}
         </button>
       </div>
     </div>

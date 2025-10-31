@@ -6,8 +6,10 @@ export const EditProfileButton = () => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="border border-constrast text-sm rounded-2xl p-1 px-2
-         hover:bg-copacity_25 hover:bg-opacity-10 transition-all duration-300">
+        <button
+          className="border border-constrast text-sm rounded-2xl p-1 px-2
+         hover:bg-copacity_25 hover:bg-opacity-10 transition-all duration-300"
+        >
           editar perfil
         </button>
       </Dialog.Trigger>
@@ -23,12 +25,9 @@ export const EditProfileButton = () => {
         >
           <div className="flex gap-4  items-center  ">
             <Dialog.Close asChild>
-              <CloseButton arial-label="Close"/>
+              <CloseButton arial-label="Close" />
             </Dialog.Close>
-            <p className="font-semibold text-xl">
-              {" "}
-              Edital perfil{" "}
-            </p>
+            <p className="font-semibold text-xl"> Edital perfil </p>
           </div>
           <FormEditProfile />
         </Dialog.Content>

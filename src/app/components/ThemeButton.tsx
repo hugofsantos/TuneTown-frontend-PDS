@@ -55,20 +55,31 @@ export const ThemeButton = () => {
   };
 
   return (
-    <button className="text-black border border-stroke 
+    <button
+      className="text-black border border-stroke 
     absolute size-12 items-center rounded-md flex 
-    hover:w-20 transition-all duration-500 overflow-hidden group hover:bg-blend-overlay hover:shadow-md hover:shadow-[#cfe9bc1a]" onClick={toggleTheme}>
-     
-     { theme === 'dark' ?  
-     <div className=" h-auto flex items-center transition-all group-hover:gap-2 ml-4 w-3 over:before:content-['dark'] text-theme  shadow-inner group-hover:transform ">
-        <img className="size-fit transition-all group-hover:-rotate-12 duration-500 " src={moon} alt="Logo" />
-        <div className="group-hover:before:content-['dark'] transition-opacity duration-500 opacity-0  group-hover:opacity-100 text-theme text-sm hover:rotate-0"></div>
-      </div> 
-      :  
-      <div className=" h-auto flex items-center transition-all group-hover:gap-2 ml-4 w-3 over:before:content-['dark'] text-theme  shadow-inner group-hover:transform ">
-      <img className="size-fit transition-all group-hover:-rotate-45 duration-500   " src={sun} alt="Logo" />
-      <div className="group-hover:before:content-['light'] transition-opacity duration-500 opacity-0  group-hover:opacity-100 text-theme text-sm hover:rotate-0"></div>
-    </div> }
-</button>
+    hover:w-20 transition-all duration-500 overflow-hidden group hover:bg-blend-overlay hover:shadow-md hover:shadow-[#cfe9bc1a]"
+      onClick={toggleTheme}
+    >
+      {theme === "dark" ? (
+        <div className=" h-auto flex items-center transition-all group-hover:gap-2 ml-4 w-3 over:before:content-['dark'] text-theme  shadow-inner group-hover:transform ">
+          <img
+            className="size-fit transition-all group-hover:-rotate-12 duration-500 "
+            src={moon}
+            alt="Logo"
+          />
+          <div className="group-hover:before:content-['dark'] transition-opacity duration-500 opacity-0  group-hover:opacity-100 text-theme text-sm hover:rotate-0"></div>
+        </div>
+      ) : (
+        <div className=" h-auto flex items-center transition-all group-hover:gap-2 ml-4 w-3 over:before:content-['dark'] text-theme  shadow-inner group-hover:transform ">
+          <img
+            className="size-fit transition-all group-hover:-rotate-45 duration-500   "
+            src={sun}
+            alt="Logo"
+          />
+          <div className="group-hover:before:content-['light'] transition-opacity duration-500 opacity-0  group-hover:opacity-100 text-theme text-sm hover:rotate-0"></div>
+        </div>
+      )}
+    </button>
   );
 };

@@ -14,7 +14,7 @@ interface InitialPageProps {
   email?: string;
   username?: string;
   avatarUrl?: string;
-  form?: 'signUp' | 'signIn';
+  form?: "signUp" | "signIn";
   refreshToken?: string;
   accessToken?: string;
 }
@@ -24,7 +24,7 @@ export const InitialPage = ({
   email,
   username,
   form,
- avatarUrl, 
+  avatarUrl,
   refreshToken,
   accessToken,
 }: InitialPageProps) => {
@@ -74,7 +74,6 @@ export const InitialPage = ({
           <div className="justify-center overflow-hidden">
             <Button
               onClick={() => {
-              
                 window.location.href = AUTH_URL;
                 console.log("initial Page");
               }}
@@ -115,7 +114,14 @@ export const InitialPage = ({
                   </button>
                 </Dialog.Close>
 
-                <FormSignUp avatarUrl={avatarUrl} name={name} email={email} username={username} refreshToken={refreshToken} accessToken={accessToken}/>
+                <FormSignUp
+                  avatarUrl={avatarUrl}
+                  name={name}
+                  email={email}
+                  username={username}
+                  refreshToken={refreshToken}
+                  accessToken={accessToken}
+                />
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog.Root>

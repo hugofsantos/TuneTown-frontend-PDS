@@ -1,6 +1,6 @@
 interface ButtonProps {
   children: string;
-    buttonSelected: string;
+  buttonSelected: string;
   setButtonSelected: (value: string) => void;
 }
 
@@ -9,7 +9,6 @@ export const MenuItem = ({
   buttonSelected,
   setButtonSelected,
 }: ButtonProps) => {
-
   function handleClick() {
     setButtonSelected(children);
   }
@@ -19,7 +18,9 @@ export const MenuItem = ({
       type="button"
       onClick={handleClick}
       className={`${
-        buttonSelected === children ? `border-b-2 border-theme font-semibold` : ``
+        buttonSelected === children
+          ? `border-b-2 border-theme font-semibold`
+          : ``
       } `}
     >
       {children}

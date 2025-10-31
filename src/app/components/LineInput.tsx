@@ -23,5 +23,5 @@ export const LineInput = forwardRef<HTMLInputElement, InputProps>(
         />
       </div>
     );
-  }
+  },
 );

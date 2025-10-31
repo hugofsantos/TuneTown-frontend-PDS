@@ -9,27 +9,24 @@ import { useForm } from "react-hook-form";
 
 export const FormSignIn = () => {
   const { user, profile, loading, handleLogin } = useAuth();
-  
-  const {
-    register,
-    handleSubmit
-  } = useForm<UserLogin>();
-  
+
+  const { register, handleSubmit } = useForm<UserLogin>();
+
   const navigate = useNavigate();
 
-useEffect(() => {
-  if (user) {
-    navigate(`/${user.username}`);
-  }
-}, [user, loading]);
+  useEffect(() => {
+    if (user) {
+      navigate(`/${user.username}`);
+    }
+  }, [user, loading]);
 
-function sendSubmit (data: UserLogin) {
-  handleLogin(data);
+  function sendSubmit(data: UserLogin) {
+    handleLogin(data);
 
-  if (user) {
-    navigate(`/${user.username}`);
+    if (user) {
+      navigate(`/${user.username}`);
+    }
   }
-}
 
   return (
     <form

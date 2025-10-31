@@ -23,7 +23,7 @@ export const TokenCallback = () => {
       console.log("TokenCallback code:", code);
       if (!code) {
         console.error("Authorization code is missing");
-        return
+        return;
       }
 
       try {
@@ -39,10 +39,10 @@ export const TokenCallback = () => {
               "Content-Type": "application/x-www-form-urlencoded",
               Authorization: "Basic " + btoa(`${clientId}:${clientSecret}`),
             },
-          }
-        )
+          },
+        );
 
-        console.log(tokenResponse.data)
+        console.log(tokenResponse.data);
         let accessToken = tokenResponse.data.access_token;
         let refreshToken = tokenResponse.data.refresh_token;
         // Use o token de acesso para obter informações do usuário
@@ -50,13 +50,12 @@ export const TokenCallback = () => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        })
+        });
 
-        console.log(userResponse.data)
-       setUserData({ ...userResponse.data, accessToken, refreshToken });
-
+        console.log(userResponse.data);
+        setUserData({ ...userResponse.data, accessToken, refreshToken });
       } catch (error) {
-        console.error("Error fetching tokens", error)
+        console.error("Error fetching tokens", error);
       }
     };
 

@@ -5,16 +5,16 @@ import { userSpotifyToken } from "../../../domain/types/Auth";
 export async function storeTokenSpotifyService({
   accessToken,
   refreshToken,
-  userId
+  userId,
 }: userSpotifyToken) {
   const authGatewayHttp = new AuthGatewayHttp();
 
   try {
-    console.log("storeTokenSpotifyService", accessToken, refreshToken, userId)
+    console.log("storeTokenSpotifyService", accessToken, refreshToken, userId);
     const response = await authGatewayHttp.storeTokenSpotify({
       accessToken,
       refreshToken,
-      userId
+      userId,
     });
     return response;
   } catch (error: any) {

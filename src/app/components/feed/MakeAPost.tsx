@@ -9,7 +9,6 @@ import { Photo } from "../Photo";
 import { makeATuneet } from "@/app/services/auth/makeATuneet";
 import { toast } from "sonner";
 
-
 type track = {
   album: {
     images: {
@@ -32,10 +31,15 @@ type Song = {
   itemType: string;
   plataform: string;
   title: string;
-}
+};
 
-
-export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" | "podcast", onClose: () => void }) => {
+export const MakeAPost = ({
+  itemType,
+  onClose,
+}: {
+  itemType: "music" | "album" | "podcast";
+  onClose: () => void;
+}) => {
   const { user, tokenSpotify, posts, setPosts } = useAuth();
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResult, setSearchResult] = useState<Song[]>([]);
@@ -50,31 +54,33 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
       }
       const result = await findSongByTitle(searchInput, itemType);
 
-      console.log(result)
+      console.log(result);
       setSearchResult(result);
     };
 
     buscarMusica();
-
   }, [searchInput]);
 
   async function makeAPost() {
     try {
-      const response = await makeATuneet(commentInput, searchClicked?.itemId, itemType);
+      const response = await makeATuneet(
+        commentInput,
+        searchClicked?.itemId,
+        itemType,
+      );
       toast.success("Tuneet criado com sucesso!");
-       setPosts([response, ...posts]);
+      setPosts([response, ...posts]);
     } catch (e) {
       toast.error("Erro ao criar Tuneet");
-    } 
-      onClose();
+    }
+    onClose();
   }
 
   return (
     <div className="flex justify-between flex-col w-full h-full box-border">
       <div className="flex w-full justify-between">
         <Dialog.Close asChild>
-          <CloseButton
-            onClick={onClose} aria-label="Close" />
+          <CloseButton onClick={onClose} aria-label="Close" />
         </Dialog.Close>
         <p className="">@{user?.username}</p>
         <p className="opacity-0">
@@ -96,10 +102,11 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
             placeholder="Buscar ou colar URL de áudio"
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
-            className={`rounded-sm ${searchClicked
+            className={`rounded-sm ${
+              searchClicked
                 ? "h-6 text-sm  placeholder:text-lg"
                 : "h-8 md:text-xl  placeholder:text-2xl"
-              } w-full text-start appearance-none 
+            } w-full text-start appearance-none 
           relative
           bg-transparent placeholder:text-theme sm:text-sm/6 
           block
@@ -121,14 +128,12 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
                 <button
                   onClick={() => {
                     setSearchInput("");
-                    setSearchClicked(item)
+                    setSearchClicked(item);
                   }}
                   className="flex hover:text-theme transition-all duration-75"
                   key={item.itemId}
                 >
-                  <Photo
-                    size="1"
-                    src={item.artworkUrl} />
+                  <Photo size="1" src={item.artworkUrl} />
                   {item.artist} - {item.title}
                 </button>
               ))}
@@ -144,10 +149,7 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
       <div className="flex  flex-col h-full w-full justify-between">
         {searchClicked && (
           <div className="flex gap-3">
-            <img
-              className="size-32"
-              src={searchClicked.artworkUrl}
-            ></img>
+            <img className="size-32" src={searchClicked.artworkUrl}></img>
             <div>
               <p>{searchClicked.artist}</p>
               <p>{searchClicked.title}</p>
@@ -161,7 +163,6 @@ export const MakeAPost = ({ itemType, onClose }: { itemType: "music" | "album" |
             </div>
           </div>
         )}
-
 
         <input
           placeholder="Comente aqui"

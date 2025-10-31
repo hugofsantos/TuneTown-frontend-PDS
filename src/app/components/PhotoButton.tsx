@@ -8,7 +8,7 @@ export default function FormPhotoUpload() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(
-    profile?.urlPhoto ?? null
+    profile?.urlPhoto ?? null,
   );
 
   // Atualiza preview se profile mudar (ex: ao editar perfil ou logar outro usuário)

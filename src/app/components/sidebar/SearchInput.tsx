@@ -11,7 +11,9 @@ const SearchInput = () => {
 
   const navigate = useNavigate();
 
-  async function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+  async function handleSearchChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
     try {
       const query = event.target.value;
 
@@ -22,7 +24,7 @@ const SearchInput = () => {
 
       const response = await searchProfiles(query);
       const filtered = response.filter(
-        (perfil: any) => perfil.userId !== user?.id
+        (perfil: any) => perfil.userId !== user?.id,
       );
       setPerfis(filtered);
     } catch (e) {
@@ -43,9 +45,7 @@ const SearchInput = () => {
         placeholder="Buscar"
       />
       {perfis.length > 0 && (
-        <div
-          className="absolute top-full left-0 w-full  border border-stroke bg-fume rounded-md mt-1 max-h-60 overflow-y-auto z-10"
-        >
+        <div className="absolute top-full left-0 w-full  border border-stroke bg-fume rounded-md mt-1 max-h-60 overflow-y-auto z-10">
           {perfis.map((perfil: any) => (
             <div
               onClick={() => {

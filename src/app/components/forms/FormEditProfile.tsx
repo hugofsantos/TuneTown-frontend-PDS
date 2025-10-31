@@ -14,7 +14,6 @@ export const FormEditProfile = () => {
   function sendSubmit(data: EditProfile) {
     // const response = await editProfileRequest(user!.id, data);
     // console.log("Profile edited:", response);
-
   }
 
   return (
@@ -23,11 +22,9 @@ export const FormEditProfile = () => {
       className="flex flex-col space-y-5 px-6 py-5"
     >
       <div className="flex flex-col items-center space-y-4">
-      
-      <FormPhotoUpload />
+        <FormPhotoUpload />
 
-          {/* <PhotoButton size="7" src={profile?.urlPhoto} /> */}
-
+        {/* <PhotoButton size="7" src={profile?.urlPhoto} /> */}
 
         {/* <Input label="Nome" {...register("name", { required: true })} /> */}
         <TextArea

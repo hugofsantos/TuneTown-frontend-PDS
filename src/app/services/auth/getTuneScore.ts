@@ -8,7 +8,7 @@ type TuneScoreResponse = {
 
 export async function getTuneScore(
   userId1: string,
-  userId2: string
+  userId2: string,
 ): Promise<TuneScoreResponse | null> {
   const userGatewayHttp = new UserGatewayHttp();
 

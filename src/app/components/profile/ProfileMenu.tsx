@@ -80,9 +80,7 @@ export const ProfileMenu = ({
             <FavoriteMusic />
             <div>{isOwner && <EditProfileButton />}</div>
 
-            {!isOwner && isLoggedUser && (
-              <FollowButton followedId={userId} />
-            )}
+            {!isOwner && isLoggedUser && <FollowButton followedId={userId} />}
           </div>
         </div>
 

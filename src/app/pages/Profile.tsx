@@ -26,7 +26,6 @@ export const Profile = () => {
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const { profileId } = useParams();
 
-
   async function fetchProfilePosts(page = 0, userId?: string) {
     setLoading(true);
 
@@ -42,24 +41,22 @@ export const Profile = () => {
 
     if (userId != undefined) {
       tuneets = await findTuneetsByUserId(userId!, metadados);
-  
 
-    const ids = new Set(posts.map((t) => t.id));
-    const novos = tuneets.itens.filter((t) => !ids.has(t.id));
-    setPosts([...posts, ...novos]);
+      const ids = new Set(posts.map((t) => t.id));
+      const novos = tuneets.itens.filter((t) => !ids.has(t.id));
+      setPosts([...posts, ...novos]);
 
-    const newMetadados: PageMetadados = {
-      totalItens: tuneets.totalItens,
-      totalPages: tuneets.totalPages,
-      currentPage: tuneets.currentPage,
-      pageItens: tuneets.pageItens,
-      pageSize: tuneets.pageSize,
-    };
-    
+      const newMetadados: PageMetadados = {
+        totalItens: tuneets.totalItens,
+        totalPages: tuneets.totalPages,
+        currentPage: tuneets.currentPage,
+        pageItens: tuneets.pageItens,
+        pageSize: tuneets.pageSize,
+      };
 
-    setPageMetadados(newMetadados);
-    setHasMore(newMetadados.currentPage < newMetadados.totalPages);
-      }
+      setPageMetadados(newMetadados);
+      setHasMore(newMetadados.currentPage < newMetadados.totalPages);
+    }
     setLoading(false);
   }
 
@@ -75,11 +72,8 @@ export const Profile = () => {
     });
     setHasMore(true);
     fetchUserProfile();
-  
   }, [profileId]);
 
-
-  
   async function fetchUserProfile() {
     if (!profileId) return;
 
@@ -88,7 +82,7 @@ export const Profile = () => {
     console.log("userProfile", userProfile);
     if (!userProfile) return;
     setUserProfile(userProfile);
-    
+
     fetchProfilePosts(0, userProfile.userId);
   }
 

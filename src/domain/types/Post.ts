@@ -13,11 +13,11 @@ export type Tuneet = {
     artworkUrl: string;
     type: "MUSIC" | "ALBUM" | "PODCAST";
     itemId: string;
-  },
+  };
   itemId: string;
   itemPlataform: string;
   itemArtist: string;
-  itemArtworkUrl: string
+  itemArtworkUrl: string;
   tunableContent: string;
   itemTitle: string;
   authorName: string;
@@ -27,16 +27,15 @@ export type Tuneet = {
   comments: Comment[];
   likes: Like[];
   author: UserWithProfile;
-}
+};
 
 export type PostEntity = Tuneet & {
   id: string;
   authorId: string;
   createdAt: string;
-}
+};
 
-
-export type PageMetadados = { 
+export type PageMetadados = {
   currentPage: number;
   pageItens: number;
   totalItens: number;
@@ -56,4 +55,4 @@ export type TuneetTrending = {
   itemType: string;
   artworkUrl: string;
   tuneetCount: number;
-}
+};

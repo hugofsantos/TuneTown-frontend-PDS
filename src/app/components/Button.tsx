@@ -16,17 +16,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         full
           ? "bg-transparent text-theme border border-theme hover:text-theme/10"
           : bg
-          ? `${bg} hover:bg-fume/10 border  border-stroke`
-          : `bg-theme hover:bg-fume/10 border border-stroke`
+            ? `${bg} hover:bg-fume/10 border  border-stroke`
+            : `bg-theme hover:bg-fume/10 border border-stroke`
       } 
       hover:opacity-90 transition-opacity 
       w-full py-2 rounded-sm text-base`}
-        {...props} 
+        {...props}
       >
         {children}
       </button>
     );
-  }
+  },
 );
 
-Button.displayName = "Button"; 
+Button.displayName = "Button";

@@ -1,8 +1,7 @@
 import React from "react";
 
-
 export const CloseButton = ({
-  onClick
+  onClick,
 }: {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) => {

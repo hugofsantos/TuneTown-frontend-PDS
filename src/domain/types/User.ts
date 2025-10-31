@@ -9,7 +9,7 @@ export type User = {
 export type UserWithProfile = User & {
   id: string;
   profile: Profile;
-}
+};
 
 export type Profile = {
   id: string;
@@ -19,7 +19,7 @@ export type Profile = {
   followersCount: number;
   userId: string;
   avatarUrl: string | null;
-}
+};
 
 export type UserEntity = User & {
   id: string;

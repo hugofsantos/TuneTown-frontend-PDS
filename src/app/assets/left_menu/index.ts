@@ -6,7 +6,6 @@ export { default as more } from "./white/more.svg";
 export { default as profile } from "./white/profile.svg";
 export { default as search } from "./white/search.svg";
 
-
 export { default as config2 } from "./black/config.svg";
 export { default as foruns2 } from "./black/foruns.svg";
 export { default as home2 } from "./black/home.svg";

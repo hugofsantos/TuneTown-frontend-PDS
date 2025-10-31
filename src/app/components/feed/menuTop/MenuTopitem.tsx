@@ -4,11 +4,11 @@ import { MakeAPost } from "../MakeAPost";
 import { useState } from "react";
 
 type MenuitemShareProps = {
-src :string;
-alt? :string;
-name :string;
-type: itemType;
-}
+  src: string;
+  alt?: string;
+  name: string;
+  type: itemType;
+};
 
 type itemType = "music" | "album" | "podcast";
 
@@ -20,7 +20,7 @@ export const MenuitemShare = ({ src, alt, name, type }: MenuitemShareProps) => {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button
-        onClick={() => setItemType(type.toLowerCase() as itemType)}
+          onClick={() => setItemType(type.toLowerCase() as itemType)}
           className="w-[25%] py-2 px-5 text-center 
         items-center gap-2 justify-center flex rounded-full
         border border-stroke color-constrast hover:bg-black/10

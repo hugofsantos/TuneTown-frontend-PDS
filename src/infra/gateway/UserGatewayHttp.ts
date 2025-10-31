@@ -25,32 +25,31 @@ export default class UserGatewayHttp {
 
   async getProfileByUsername(username: string): Promise<Profile> {
     const response = await this.httpClient.get(
-      `${this.url}/profile/getByUsername/${username}`
+      `${this.url}/profile/getByUsername/${username}`,
     );
     return response.data;
   }
 
-    async searchProfileByUsername (username: string): Promise<any> {
+  async searchProfileByUsername(username: string): Promise<any> {
     const response = await this.httpClient.get(
-      `${this.url}/user/with-profile/username/${username}`
+      `${this.url}/user/with-profile/username/${username}`,
     );
     return response;
   }
 
-async followUser(followerId: string, followedId: string): Promise<any> {
-  const response = await this.httpClient.post(
-    `${this.url}/follows/${followerId}/follow/${followedId}`
-  );
-  return response;
-}
+  async followUser(followerId: string, followedId: string): Promise<any> {
+    const response = await this.httpClient.post(
+      `${this.url}/follows/${followerId}/follow/${followedId}`,
+    );
+    return response;
+  }
 
-async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
-  const response = await this.httpClient.delete(
-    `${this.url}/follows/${followerId}/unfollow/${followedId}`
-  );
-  return response;
-}
-
+  async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
+    const response = await this.httpClient.delete(
+      `${this.url}/follows/${followerId}/unfollow/${followedId}`,
+    );
+    return response;
+  }
 
   async findUserProfile(id: string): Promise<any> {
     try {
@@ -62,14 +61,15 @@ async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
     }
   }
 
-    async searchProfiles(query: string): Promise<any> {
+  async searchProfiles(query: string): Promise<any> {
     try {
+      const params = new URLSearchParams({
+        query,
+      }).toString();
 
-       const params = new URLSearchParams({
-        query
-    }).toString();
-
-      const response = await this.httpClient.get(`${this.url}/user/with-profile/search-by-username-part/${query}`);
+      const response = await this.httpClient.get(
+        `${this.url}/user/with-profile/search-by-username-part/${query}`,
+      );
 
       return response.itens;
     } catch (error: any) {
@@ -94,7 +94,7 @@ async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
     try {
       const response = await this.httpClient.post(
         `${this.url}/profile/${profileId}/photo`,
-        formData
+        formData,
       );
       // response já é o data correto
       return response;
@@ -112,13 +112,13 @@ async deleteFollowUser(followerId: string, followedId: string): Promise<any> {
   async getTuneScore(userId1: string, userId2: string): Promise<any> {
     try {
       const response = await this.httpClient.get(
-        `${this.url}/tunescore/${userId1}/${userId2}`
+        `${this.url}/tunescore/${userId1}/${userId2}`,
       );
       return response;
     } catch (error: any) {
       console.error(`Error in getTuneScore: ${error}`);
       throw new Error(
-        error.response?.data?.message || "Erro ao buscar TuneScore"
+        error.response?.data?.message || "Erro ao buscar TuneScore",
       );
     }
   }

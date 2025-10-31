@@ -12,27 +12,34 @@ export default class TuneetGatewayHttp {
     this.httpClient = new AxiosAdapter();
   }
 
-    async findByTitle(word: string, itemType: string): Promise<any> {
+  async findByTitle(word: string, itemType: string): Promise<any> {
     const params = new URLSearchParams({
-        query: word,
-        itemType: itemType
+      query: word,
+      itemType: itemType,
     }).toString();
 
-    const response = await this.httpClient.get(`${this.url}/search-tunable-item?${params}`);
+    const response = await this.httpClient.get(
+      `${this.url}/search-tunable-item?${params}`,
+    );
     return response;
-    }
+  }
 
-   async findTuneetsByUserId(userId: string, metadados: PageMetadados): Promise<any> {
+  async findTuneetsByUserId(
+    userId: string,
+    metadados: PageMetadados,
+  ): Promise<any> {
     let params = "";
 
     if (metadados.currentPage || metadados.pageSize) {
-          params = new URLSearchParams({
-      page: metadados.currentPage.toString(),
-      size: metadados.pageSize.toString()
-    }).toString();
-    } 
+      params = new URLSearchParams({
+        page: metadados.currentPage.toString(),
+        size: metadados.pageSize.toString(),
+      }).toString();
+    }
 
-   return await this.httpClient.get(`${this.url}/author/${userId}/resume?${params}`);
+    return await this.httpClient.get(
+      `${this.url}/author/${userId}/resume?${params}`,
+    );
   }
 
   async findTuneetById(tuneetId: string): Promise<any> {
@@ -44,9 +51,17 @@ export default class TuneetGatewayHttp {
     }
   }
 
-  async makeATuneet(textContent: string, itemId: string | undefined, itemType: "music" | "album" | "podcast"): Promise<any> {
+  async makeATuneet(
+    textContent: string,
+    itemId: string | undefined,
+    itemType: "music" | "album" | "podcast",
+  ): Promise<any> {
     try {
-      return await this.httpClient.post(`${this.url}`, { textContent, itemId, itemType: itemType.toUpperCase() });
+      return await this.httpClient.post(`${this.url}`, {
+        textContent,
+        itemId,
+        itemType: itemType.toUpperCase(),
+      });
     } catch (error: any) {
       console.error(`Error in makeATuneet: ${error}`);
       throw new Error(error.response.data.message);
@@ -61,6 +76,4 @@ export default class TuneetGatewayHttp {
       throw new Error(error.response.data.message);
     }
   }
-
- 
 }

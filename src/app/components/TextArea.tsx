@@ -1,10 +1,10 @@
 import React, { forwardRef, useRef } from "react";
 
-interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   height?: string;
 }
-
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, height, ...props }, ref) => {
@@ -29,5 +29,5 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         />
       </div>
     );
-  }
+  },
 );

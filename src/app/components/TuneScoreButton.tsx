@@ -58,7 +58,7 @@ export const TuneScoreButton: React.FC<TuneScoreButtonProps> = ({
           }
         }}
         onBlur={() => setShowTooltip(false)}
-            className={`flex items-center gap-1 px-2 py-1 rounded-full border border-theme 
+        className={`flex items-center gap-1 px-2 py-1 rounded-full border border-theme 
             bg-fume text-theme font-medium transition-all duration-150 shadow-sm
             hover:bg-theme hover:text-fume hover:shadow-md
             disabled:opacity-60 disabled:cursor-not-allowed
@@ -69,8 +69,8 @@ export const TuneScoreButton: React.FC<TuneScoreButtonProps> = ({
           {loading
             ? "Calculando..."
             : tuneScore !== null
-            ? `${tuneScore}% Match`
-            : "Ver TuneScore"}
+              ? `${tuneScore}% Match`
+              : "Ver TuneScore"}
         </span>
       </button>
       {showTooltip &&
@@ -89,7 +89,7 @@ export const TuneScoreButton: React.FC<TuneScoreButtonProps> = ({
               <div className="absolute left-1/2 top-full -translate-x-1/2 w-2 h-2 bg-fume rotate-45 border-l border-t border-stroke" />
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </div>
   );

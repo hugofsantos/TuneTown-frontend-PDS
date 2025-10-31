@@ -30,8 +30,8 @@ SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay> {
-    isOpen: boolean;
-  }
+  isOpen: boolean;
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
@@ -43,9 +43,11 @@ const SheetContent = React.forwardRef<
       ref={ref}
       className={`fixed z-50 gap-4 rounded-sm bg-fume p-6 text-contrast border border-stroke shadow-lg transition ease-in-out 
         
-        ${ isOpen
-          ? `duration-500 inset-y-0 animate-slide-in-from-right`
-          : `duration-300 animate-slide-out-to-right`}
+        ${
+          isOpen
+            ? `duration-500 inset-y-0 animate-slide-in-from-right`
+            : `duration-300 animate-slide-out-to-right`
+        }
         right-0 top-0 h-full w-[50rem] border-l  sm:max-w-md `}
       {...props}
     >

@@ -1,4 +1,3 @@
-
 import { UserRegister } from "@/domain/types/Auth";
 import Input from "../Input";
 import { useForm } from "react-hook-form";
@@ -13,7 +12,14 @@ interface FormSignUpProps {
   refreshToken?: string;
   accessToken?: string;
 }
-export const FormSignUp = ({ name, email, username, avatarUrl, refreshToken, accessToken }: FormSignUpProps) => {
+export const FormSignUp = ({
+  name,
+  email,
+  username,
+  avatarUrl,
+  refreshToken,
+  accessToken,
+}: FormSignUpProps) => {
   const { register, handleSubmit, watch } = useForm<UserRegister>({
     defaultValues: {
       name,
@@ -22,11 +28,15 @@ export const FormSignUp = ({ name, email, username, avatarUrl, refreshToken, acc
     },
   });
 
-  
   const { handleRegister } = useAuth();
 
   async function onSubmit(data: UserRegister) {
-    const dataWithAvatarAndTokens = { ...data, avatarUrl, refreshToken, accessToken};
+    const dataWithAvatarAndTokens = {
+      ...data,
+      avatarUrl,
+      refreshToken,
+      accessToken,
+    };
 
     handleRegister(dataWithAvatarAndTokens);
   }

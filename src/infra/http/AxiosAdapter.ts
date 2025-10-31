@@ -16,21 +16,25 @@ export default class AxiosAdapter implements HttpClient {
       return res.data;
     } catch (error: any) {
       if (error?.response?.status === 403) {
-        toast.error("Sessão expirada ou acesso não autorizado. Faça login novamente.");
+        toast.error(
+          "Sessão expirada ou acesso não autorizado. Faça login novamente.",
+        );
         forceLogout();
       }
       console.error(`Error in delete: ${error}`);
       throw error;
     }
   }
-  
+
   async get(url: string): Promise<any> {
     try {
       const res = await axios.get(url);
       return res.data;
     } catch (error: any) {
       if (error?.response?.status === 403) {
-        toast.error("Sessão expirada ou acesso não autorizado. Faça login novamente.");
+        toast.error(
+          "Sessão expirada ou acesso não autorizado. Faça login novamente.",
+        );
         forceLogout();
       }
       console.error(`Error in get: ${error}`);
@@ -43,7 +47,7 @@ export default class AxiosAdapter implements HttpClient {
       // Detect FormData and set headers for file upload
       let config = {};
       if (typeof FormData !== "undefined" && data instanceof FormData) {
-        config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        config = { headers: { "Content-Type": "multipart/form-data" } };
       }
       const res = await axios.post(url, data, config);
       return res.data;
@@ -61,7 +65,10 @@ export default class AxiosAdapter implements HttpClient {
   setHeaders(headers: Record<string, string> | null) {
     if (!headers || Object.keys(headers).length === 0) {
       // Limpa apenas o Authorization se existir
-      if (axios.defaults.headers.common && axios.defaults.headers.common["Authorization"]) {
+      if (
+        axios.defaults.headers.common &&
+        axios.defaults.headers.common["Authorization"]
+      ) {
         delete axios.defaults.headers.common["Authorization"];
       }
       return;

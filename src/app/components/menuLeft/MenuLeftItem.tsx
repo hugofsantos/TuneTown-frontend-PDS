@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom";
 import { Img } from "../Img";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../Sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../Sheet";
 import { useState } from "react";
 import { Button } from "../Button";
 import { FormConfig } from "../forms/FormConfig";
@@ -10,7 +19,7 @@ interface MenuLeftItemProps {
   alt: string;
   buttonSelected: string;
   setButtonSelected: (value: string) => void;
-  to?: string; 
+  to?: string;
 }
 
 export const MenuLeftItem = ({
@@ -20,13 +29,12 @@ export const MenuLeftItem = ({
   setButtonSelected,
   to,
 }: MenuLeftItemProps) => {
-
   const [isSheetVisible, setIsSheetVisible] = useState(false);
 
-    function selectMenu(alt: string) {
-      setButtonSelected(alt)
-      alt === "config" ? setIsSheetVisible(true) : setIsSheetVisible(false); 
-    }
+  function selectMenu(alt: string) {
+    setButtonSelected(alt);
+    alt === "config" ? setIsSheetVisible(true) : setIsSheetVisible(false);
+  }
 
   return (
     <>
@@ -53,8 +61,6 @@ export const MenuLeftItem = ({
         {isSheetVisible && (
           <SheetContent isOpen={isSheetVisible}>
             <FormConfig />
-            
-          
           </SheetContent>
         )}
       </Sheet>

@@ -1,6 +1,10 @@
 import { createContext, useContext } from "react";
 import { UserWithProfile } from "../../../domain/types/User";
-import { UserLogin, UserRegister, userSpotifyToken } from "../../../domain/types/Auth";
+import {
+  UserLogin,
+  UserRegister,
+  userSpotifyToken,
+} from "../../../domain/types/Auth";
 import { Profile } from "@/domain/types/Profile";
 import { Tuneet } from "@/domain/types/Post";
 

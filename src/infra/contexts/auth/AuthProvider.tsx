@@ -13,11 +13,7 @@ type AuthProviderProps = PropsWithChildren & {
   isSignedIn?: boolean;
 };
 
-
-export default function AuthProvider({
-  children
-}: AuthProviderProps) {
-
+export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserWithProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [tokenSpotify, setTokenSpotify] = useState<string>("");
@@ -37,13 +33,11 @@ export default function AuthProvider({
     }
 
     if (profile && profile !== "undefined") {
-    setUser(user ? JSON.parse(user) : null);
-    setProfile(profile ? JSON.parse(profile) : null);
-
+      setUser(user ? JSON.parse(user) : null);
+      setProfile(profile ? JSON.parse(profile) : null);
     }
     setLoading(false);
   }, []);
-
 
   async function handleRegister(data: UserRegister) {
     setLoading(true);
@@ -58,11 +52,10 @@ export default function AuthProvider({
     setLoading(false);
   }
 
-
   async function handleLogin({ login, password }: UserLogin) {
-    setLoading(true)
+    setLoading(true);
 
-    const data = await signInRequest({ login, password })
+    const data = await signInRequest({ login, password });
 
     localStorage.setItem("tunetown@token", data.accessToken);
     localStorage.setItem("tunetown@user", JSON.stringify(data.userDTO));
@@ -75,9 +68,12 @@ export default function AuthProvider({
       const profile = await findUserProfile(data.userDTO.profileId);
       localStorage.setItem("tunetown@profile", JSON.stringify(profile.data));
       setProfile(profile.data);
-    } else { 
+    } else {
       const profileData = await createProfile(data.userDTO.id);
-      localStorage.setItem("tunetown@profile", JSON.stringify(profileData.profile));
+      localStorage.setItem(
+        "tunetown@profile",
+        JSON.stringify(profileData.profile),
+      );
       setProfile(profileData.profile);
     }
 
@@ -90,7 +86,6 @@ export default function AuthProvider({
     // httpClient.setHeaders("");
   }
 
-
   return (
     <AuthContext.Provider
       value={{
@@ -101,7 +96,7 @@ export default function AuthProvider({
         handleLogin,
         handleLogout,
         tokenSpotify,
-        handleRegister
+        handleRegister,
       }}
     >
       {children}

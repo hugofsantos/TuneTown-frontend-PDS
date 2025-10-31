@@ -1,14 +1,13 @@
-
-export type AuthProvider = { 
-    isSignedIn?: boolean;
-}
+export type AuthProvider = {
+  isSignedIn?: boolean;
+};
 
 export type UserLogin = {
   login: string;
   password: string;
 };
 
-export type UserRegister =  {
+export type UserRegister = {
   username: string;
   email: string;
   password: string;

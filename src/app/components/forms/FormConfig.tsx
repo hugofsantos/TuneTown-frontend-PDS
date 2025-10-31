@@ -53,15 +53,17 @@ export const FormConfig = () => {
       </SheetFooter>
       <div className="mt-auto">
         <Button
-        onClick={()=> {
- localStorage.clear();
- localStorage.removeItem("tunetown@token");
- localStorage.removeItem("tunetown@user");
- localStorage.removeItem("tunetown@profile");
+          onClick={() => {
+            localStorage.clear();
+            localStorage.removeItem("tunetown@token");
+            localStorage.removeItem("tunetown@user");
+            localStorage.removeItem("tunetown@profile");
 
- navigate("/", { replace: true });
-        }}
-        >Sair</Button>
+            navigate("/", { replace: true });
+          }}
+        >
+          Sair
+        </Button>
       </div>
     </div>
   );

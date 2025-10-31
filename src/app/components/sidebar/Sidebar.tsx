@@ -6,19 +6,17 @@ import { StatusTuner } from "./StatusTuner";
 import { findTrendingTracks } from "@/app/services/auth/findTrendingTracks";
 import { TuneetTrending } from "@/domain/types/Post";
 
-
 export const Sidebar = () => {
   const [trendingTracks, setTrendingTracks] = useState<TuneetTrending[]>([]);
 
   useEffect(() => {
     fetchTrendingTracks();
 
-  async function fetchTrendingTracks() {
-    const response = await findTrendingTracks();
-    setTrendingTracks(response);
-  }
+    async function fetchTrendingTracks() {
+      const response = await findTrendingTracks();
+      setTrendingTracks(response);
+    }
   }, []);
-
 
   return (
     <div className="md:flex flex-col items-center h-full w-96 gap-10 p-8 border-l border-stroke hidden ">
@@ -26,7 +24,7 @@ export const Sidebar = () => {
 
       <div className="w-full h-[90%] md:flex justify-start items-start flex-col gap-3 ">
         <BoxSidebar>
-         <StatusTuner/>
+          <StatusTuner />
         </BoxSidebar>
         <BoxSidebar>
           <div className="flex gap-3 w-full p-3 flex-col items-start justify-start h-full font-light">
@@ -49,4 +47,4 @@ export const Sidebar = () => {
       </div>
     </div>
   );
-}
+};
