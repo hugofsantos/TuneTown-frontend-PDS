@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
 import { IoHeartOutline } from "react-icons/io5";
 import { IoHeart } from "react-icons/io5";
 
 export const HeartButton = ({
   liked,
-  setLiked,
+  onToggle,
   likes,
 }: {
   liked: boolean;
-  setLiked: (liked: boolean) => void;
+  onToggle: () => void;
   likes: number;
 }) => {
   return (
     <button
       className="hover:text-rose-500
         hover:border-b-violet-600 flex "
-      onClick={() => setLiked(!liked)}
+      onClick={onToggle}
+      aria-label={liked ? "Descurtir" : "Curtir"}
     >
       {liked ? (
         <IoHeart size={20} className="text-theme" />

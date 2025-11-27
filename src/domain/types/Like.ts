@@ -1,7 +1,7 @@
 import { User } from "./User";
 
 export type Like = {
-  postId: number;
+  postId: string;
   authorId: User;
 };
 

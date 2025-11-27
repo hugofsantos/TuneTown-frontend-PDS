@@ -5,7 +5,6 @@ import { MenuItem } from "./MenuItem";
 import { useState } from "react";
 import { Photo } from "../Photo";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../Button";
 import { TuneScoreButton } from "../TuneScoreButton";
 import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { FollowButton } from "./FollowButton";

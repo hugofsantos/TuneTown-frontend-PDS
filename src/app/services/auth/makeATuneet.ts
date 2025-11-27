@@ -1,5 +1,4 @@
 import TuneetGatewayHttp from "@/infra/gateway/TuneetGatewayHttp";
-import { toast } from "sonner";
 
 export async function makeATuneet(
   comment: string,
@@ -15,7 +14,7 @@ export async function makeATuneet(
       itemType,
     );
     return response;
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    throw new Error((error as Error)?.message || "Erro ao criar Tuneet");
   }
 }

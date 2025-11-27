@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { CloseButton } from "./CloseButton";
 const Sheet = SheetPrimitive.Root;
 
 const SheetTrigger = SheetPrimitive.Trigger;
@@ -16,7 +15,7 @@ const SheetOverlay = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay> & {
     isOpen: boolean;
   }
->(({ isOpen, className, ...props }, ref) => (
+>(({ isOpen, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={` ${
       isOpen ? `animate-in fade-in-0` : `animate-out fade-out-0`
@@ -36,7 +35,7 @@ interface SheetContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ className, isOpen, children, ...props }, ref) => (
+>(({ isOpen, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay isOpen={isOpen} />
     <SheetPrimitive.Content
@@ -65,10 +64,7 @@ const SheetContent = React.forwardRef<
 ));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
-const SheetHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+const SheetHeader = ({ ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className="flex flex-col space-y-2 text-center sm:text-left"
     {...props}
@@ -76,10 +72,7 @@ const SheetHeader = ({
 );
 SheetHeader.displayName = "SheetHeader";
 
-const SheetFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+const SheetFooter = ({ ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2"
     {...props}
@@ -90,7 +83,7 @@ SheetFooter.displayName = "SheetFooter";
 const SheetTitle = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
->(({ className, ...props }, ref) => (
+>(({ ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
     className="text-lg font-semibold text-foreground"
@@ -102,7 +95,7 @@ SheetTitle.displayName = SheetPrimitive.Title.displayName;
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
->(({ className, ...props }, ref) => (
+>(({ ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
     className="text-sm text-muted-foreground"

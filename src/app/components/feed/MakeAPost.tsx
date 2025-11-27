@@ -2,36 +2,13 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { Button } from "../Button";
 import { CloseButton } from "../CloseButton";
-import { FaSpotify } from "react-icons/fa";
 import * as Dialog from "@radix-ui/react-dialog";
 import { findSongByTitle } from "@/app/services/auth/findSongByTitle";
 import { Photo } from "../Photo";
 import { makeATuneet } from "@/app/services/auth/makeATuneet";
 import { toast } from "sonner";
-
-type track = {
-  album: {
-    images: {
-      url: string;
-    }[];
-    name: string;
-  };
-  artists: {
-    name: string;
-  }[];
-  name: string;
-  duration_ms: number;
-  id: string;
-};
-
-type Song = {
-  artist: string;
-  artworkUrl: string;
-  itemId: string;
-  itemType: string;
-  plataform: string;
-  title: string;
-};
+import { TunableItem } from "@/domain/types/Post";
+import { usePosts } from "@/infra/contexts/posts/PostsContext";
 
 export const MakeAPost = ({
   itemType,
@@ -40,10 +17,11 @@ export const MakeAPost = ({
   itemType: "music" | "album" | "podcast";
   onClose: () => void;
 }) => {
-  const { user, tokenSpotify, posts, setPosts } = useAuth();
+  const { user } = useAuth();
+  const { addPost } = usePosts();
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<Song[]>([]);
-  const [searchClicked, setSearchClicked] = useState<Song | null>(null);
+  const [searchResult, setSearchResult] = useState<TunableItem[]>([]);
+  const [searchClicked, setSearchClicked] = useState<TunableItem | null>(null);
   const [commentInput, setCommentInput] = useState<string>("");
 
   useEffect(() => {
@@ -54,22 +32,23 @@ export const MakeAPost = ({
       }
       const result = await findSongByTitle(searchInput, itemType);
 
-      console.log(result);
-      setSearchResult(result);
+      setSearchResult(result ?? []);
     };
 
     buscarMusica();
-  }, [searchInput]);
+  }, [searchInput, itemType]);
 
   async function makeAPost() {
     try {
-      const response = await makeATuneet(
+      const newPost = await makeATuneet(
         commentInput,
         searchClicked?.itemId,
         itemType,
       );
+      if (newPost) {
+        addPost(newPost);
+      }
       toast.success("Tuneet criado com sucesso!");
-      setPosts([response, ...posts]);
     } catch (e) {
       toast.error("Erro ao criar Tuneet");
     }
@@ -124,7 +103,7 @@ export const MakeAPost = ({
               gap-y-2
               z-20 items-start overflow-auto h-[10rem] text-sm"
             >
-              {searchResult?.map((item: Song) => (
+              {searchResult?.map((item) => (
                 <button
                   onClick={() => {
                     setSearchInput("");
@@ -149,11 +128,11 @@ export const MakeAPost = ({
       <div className="flex  flex-col h-full w-full justify-between">
         {searchClicked && (
           <div className="flex gap-3">
-            <img className="size-32" src={searchClicked.artworkUrl}></img>
+            <img className="size-32" src={searchClicked.artworkUrl} />
             <div>
               <p>{searchClicked.artist}</p>
               <p>{searchClicked.title}</p>
-              <p>{searchClicked.plataform}</p>
+              <p>{searchClicked.platformId}</p>
               {/* <p>
                 {Math.floor(searchClicked.duration_ms / 60000)}:
                 {String(
@@ -178,7 +157,7 @@ export const MakeAPost = ({
         />
 
         <div className="w-full justify-between flex p-2">
-          <button className="text-zinc-500 opacity-0">Cancelar</button>
+          <span className="text-zinc-500 opacity-0">Cancelar</span>
 
           <div className="overflow-hidden w-1/3 h-fit rounded-3xl">
             <Button onClick={() => makeAPost()}>Postar</Button>

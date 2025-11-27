@@ -1,3 +1,5 @@
+import { UserWithProfile } from "./User";
+
 export type AuthProvider = {
   isSignedIn?: boolean;
 };
@@ -11,15 +13,19 @@ export type UserRegister = {
   username: string;
   email: string;
   password: string;
-  // name: string;
-  // email: string;
-  // avatarUrl?: string;
-  // refreshToken?: string;
-  // accessToken?: string;
+  name?: string;
+  avatarUrl?: string;
+  refreshToken?: string;
+  accessToken?: string;
 };
 
-export type userSpotifyToken = {
-  userId: string;
+export type SignInResponse = {
   accessToken: string;
-  refreshToken: string;
+  userDTO: UserWithProfile & { profileId?: string | null };
+};
+
+export type RegisterResponse = {
+  id: string;
+  username: string;
+  email: string;
 };

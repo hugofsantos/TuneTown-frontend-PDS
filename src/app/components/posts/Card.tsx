@@ -7,34 +7,60 @@ import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { likeATuneet } from "@/app/services/auth/likeATuneet";
 import { useNavigate } from "react-router-dom";
 import { TbTrash } from "react-icons/tb";
+import { toast } from "sonner";
 
 interface CardProps {
-  author: string;
+  author?: string | null;
   authorImg?: string;
-  track: any;
+  track: Tuneet;
   content: string;
   children?: React.ReactNode;
 }
 
 export function Card({ author, authorImg, content, track }: CardProps) {
   const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState<number>(track.totalLikes ?? 0);
 
   const { profile, user } = useAuth();
 
   const navigate = useNavigate();
 
   async function likeTuneet() {
-    const response = await likeATuneet(track.id, profile!.id);
-    if (response?.id) {
-      setLiked(true);
-    } else {
-      setLiked(false);
+    if (!profile) return;
+    const nextLiked = !liked;
+    const delta = nextLiked ? 1 : -1;
+
+    setLiked(nextLiked);
+    setLikesCount((prev) => Math.max(0, prev + delta));
+
+    try {
+      await likeATuneet(track.id, profile.id);
+    } catch (error) {
+      // rollback on failure
+      setLiked(!nextLiked);
+      setLikesCount((prev) => Math.max(0, prev - delta));
+      toast.error("Não foi possível atualizar o like. Tente novamente.");
     }
   }
 
   function handleCardClick() {
     navigate(`/tuneet/${track.id}`);
   }
+
+  const authorAvatar =
+    authorImg ?? track.author?.profile?.photoUrl ?? track.photoUrl ?? undefined;
+
+  const tunableArtwork =
+    track.tunableItem?.artworkUrl ??
+    track.tunableItemArtworkUrl ??
+    track.itemArtworkUrl;
+  const tunableArtist =
+    track.tunableItem?.artist ??
+    track.tunableItemArtist ??
+    track.itemArtist;
+  const tunableTitle =
+    track.tunableItem?.title ?? track.tunableItemTitle ?? track.itemTitle;
+  const totalComments = track.totalComments ?? 0;
 
   return (
     <div
@@ -44,10 +70,10 @@ export function Card({ author, authorImg, content, track }: CardProps) {
     rounded-lg`}
     >
       <div className="flex w-full h-[30%] items-center gap-2">
-        <Photo size="1.9" src={track.urlPhoto} />
+        <Photo size="1.9" src={authorAvatar} />
         <div className="flex flex-col w-full text-sm">
           <span className="flex w-full justify-between ">
-            <p>@{author}</p>
+            <p>@{author ?? track.authorUsername ?? track.author?.username}</p>
             <p>
               {" "}
               {user?.id === track?.authorId && (
@@ -76,12 +102,12 @@ export function Card({ author, authorImg, content, track }: CardProps) {
             {" "}
             <img
               className="w-32 h-32 object-cover"
-              src={track?.tunableItemArtworkUrl}
-              alt={track?.tunableItemTitle}
+              src={tunableArtwork}
+              alt={tunableTitle}
             />
             <div>
-              <p>{track?.tunableItemArtist}</p>
-              <p>{track?.tunableItemTitle}</p>
+              <p>{tunableArtist}</p>
+              <p>{tunableTitle}</p>
               {/* <p>
                 {Math.floor(track?.duration_ms / 60000)}:
                 {String(
@@ -94,18 +120,14 @@ export function Card({ author, authorImg, content, track }: CardProps) {
       </div>
 
       <div className="flex w-full h-[20%] gap-6 px-7 ">
-        <HeartButton
-          liked={liked}
-          setLiked={likeTuneet}
-          likes={track?.totalLikes}
-        />
+        <HeartButton liked={liked} onToggle={likeTuneet} likes={likesCount} />
         <button
           className="hover:text-blue-500
         hover:border-b-violet-600 flex items-center gap-1"
         >
           <FaRegCommentAlt />
-          {track?.totalComments > 0 ? (
-            <span className="ml-1 text-sm">{track?.totalComments}</span>
+          {totalComments > 0 ? (
+            <span className="ml-1 text-sm">{totalComments}</span>
           ) : (
             <p>0</p>
           )}

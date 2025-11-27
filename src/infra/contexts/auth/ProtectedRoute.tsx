@@ -19,7 +19,7 @@ export const ProtectedComponent = ({
       handleLogout();
       navigate("/");
     }
-  }, [navigate, user]);
+  }, [navigate, user, isPrivate, handleLogout]);
 
   return <>{children}</>;
 };

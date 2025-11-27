@@ -1,29 +1,21 @@
 import { Profile } from "./Profile";
 
 export type User = {
-  id?: string;
+  id: string;
   email: string;
-  username: string | null;
+  username: string;
+  profileId?: string | null;
+  createdAt?: string;
 };
 
 export type UserWithProfile = User & {
-  id: string;
-  profile: Profile;
+  profile?: Profile | null;
 };
 
-export type Profile = {
+export type UserEntity = {
   id: string;
-  bio: string | null;
-  favoriteSong: string | null;
-  followingCount: number;
-  followersCount: number;
-  userId: string;
-  avatarUrl: string | null;
-};
-
-export type UserEntity = User & {
-  id: string;
-
-  profileId: number;
-  createdAt: string;
+  email: string;
+  username: string;
+  profileId?: string | null;
+  createdAt?: string;
 };

@@ -3,15 +3,18 @@ import { UserEntity } from "./User";
 
 export type Profile = {
   id: string;
+  userId?: string;
+  username?: string;
   bio?: string | null;
   favoriteSong?: string | null;
-  urlPhoto?: string | null;
-  // posts: Tuneet[] | null;
-  followers: UserEntity[] | null;
-  following: UserEntity[] | null;
-  totalFollowers: number;
-  totalFollowing: number;
-  photo: Photo;
+  photoUrl?: string | null;
+  followers?: UserEntity[] | null;
+  following?: UserEntity[] | null;
+  totalFollowers?: number;
+  totalFollowing?: number;
+  followersCount?: number;
+  followingCount?: number;
+  photo?: Photo;
 };
 
 export type Photo = {
@@ -29,7 +32,6 @@ export type ProfileEntity = Profile & {
 export type EditProfile = UserRegister & {
   bio?: string | null;
   favoriteSong?: string;
-  // password: null;
 };
 
-export type EditConfig = UserRegister & {};
+export type EditConfig = UserRegister & Record<string, never>;

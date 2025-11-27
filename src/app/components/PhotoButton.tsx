@@ -8,13 +8,13 @@ export default function FormPhotoUpload() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(
-    profile?.urlPhoto ?? null,
+    profile?.photoUrl ?? null,
   );
 
   // Atualiza preview se profile mudar (ex: ao editar perfil ou logar outro usuário)
   useEffect(() => {
-    setPreview(profile?.urlPhoto ?? null);
-  }, [profile?.urlPhoto]);
+    setPreview(profile?.photoUrl ?? null);
+  }, [profile?.photoUrl]);
 
   const userGatewayHttp = new UserGatewayHttp();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -67,11 +67,11 @@ export default function FormPhotoUpload() {
       // response já é o data correto
       setProfile({
         ...profile,
-        urlPhoto: response.data.urlPhoto,
+        photoUrl: response.photoUrl,
       });
-      localStorage.setItem("tunetown@profile", JSON.stringify(response.data));
+      localStorage.setItem("tunetown@profile", JSON.stringify(response));
 
-      setPreview(response.data.urlPhoto || null);
+      setPreview(response.photoUrl || null);
       setError(null);
     } catch (err) {
       setError("Erro ao enviar foto, tente novamente.");
@@ -129,7 +129,7 @@ export default function FormPhotoUpload() {
 
       <button
         onClick={handleSubmit}
-        disabled={loading || !preview || preview === profile?.urlPhoto}
+        disabled={loading || !preview || preview === profile?.photoUrl}
         className="px-4 py-2 rounded-lg bg-blue-600 disabled:bg-gray-400 text-white text-sm"
       >
         Salvar Foto

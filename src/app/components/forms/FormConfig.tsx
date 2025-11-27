@@ -7,10 +7,12 @@ import { useAuth } from "../../../infra/contexts/auth/UseAuth";
 import { useNavigate } from "react-router-dom";
 export const FormConfig = () => {
   const { register, handleSubmit } = useForm<EditConfig>();
-  const { user } = useAuth();
+  const { user, handleLogout } = useAuth();
 
   const navigate = useNavigate();
-  function sendSubmit(data: EditConfig) {}
+  function sendSubmit(data: EditConfig) {
+    void data;
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -54,11 +56,7 @@ export const FormConfig = () => {
       <div className="mt-auto">
         <Button
           onClick={() => {
-            localStorage.clear();
-            localStorage.removeItem("tunetown@token");
-            localStorage.removeItem("tunetown@user");
-            localStorage.removeItem("tunetown@profile");
-
+            handleLogout();
             navigate("/", { replace: true });
           }}
         >

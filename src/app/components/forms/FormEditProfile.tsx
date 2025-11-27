@@ -1,17 +1,15 @@
 import { Button } from "../Button";
 import Input from "../Input";
-import spotify_logo from "../../assets/spotify_logo.svg";
 import { useForm } from "react-hook-form";
-import { EditProfile } from "../../../domain/types/Profile";
-import { useAuth } from "../../../infra/contexts/auth/UseAuth";
-import { Photo } from "../Photo";
 import { TextArea } from "../TextArea";
 import FormPhotoUpload from "../PhotoButton";
+import { EditProfile } from "../../../domain/types/Profile";
 
 export const FormEditProfile = () => {
   const { register, handleSubmit } = useForm<EditProfile>();
 
   function sendSubmit(data: EditProfile) {
+    void data;
     // const response = await editProfileRequest(user!.id, data);
     // console.log("Profile edited:", response);
   }

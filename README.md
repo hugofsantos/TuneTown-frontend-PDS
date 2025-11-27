@@ -75,8 +75,7 @@ Para rodar o projeto localmente, siga os passos abaixo:
 
 ## 🔗 API Referências
 
-A aplicação faz uso da API do Spotify para algumas funcionalidades de busca:
-- [Spotify API](https://developer.spotify.com/)
+Atualmente integrada à API própria do projeto.
 
 ---
 

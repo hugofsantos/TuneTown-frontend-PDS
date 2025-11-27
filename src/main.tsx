@@ -10,9 +10,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthProvider from "./infra/contexts/auth/AuthProvider.tsx";
 import { ProtectedComponent } from "./infra/contexts/auth/ProtectedRoute.tsx";
 import { Feed } from "./app/pages/Feed.tsx";
-import { TokenCallback } from "./app/pages/TokenCallback.tsx";
 import { Toaster } from "sonner";
 import { TuneetCard } from "./app/pages/TuneetCard.tsx";
+import { PostsProvider } from "./infra/contexts/posts/PostsContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -82,23 +82,15 @@ const router = createBrowserRouter([
       </ContainerCentral>
     ),
   },
-  {
-    path: "/callback",
-    element: (
-      <div>
-        <TokenCallback />
-      </div>
-    ),
-  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <GoogleOAuthProvider clientId="261384658112-lkecapjtglp4l818sppi3d3695jaml9k.apps.googleusercontent.com">
-      <AuthProvider isSignedIn={false}>
+  <GoogleOAuthProvider clientId="261384658112-lkecapjtglp4l818sppi3d3695jaml9k.apps.googleusercontent.com">
+    <AuthProvider isSignedIn={false}>
+      <PostsProvider>
         <Toaster richColors />
         <RouterProvider router={router} />
-      </AuthProvider>
-    </GoogleOAuthProvider>
-  </React.StrictMode>,
+      </PostsProvider>
+    </AuthProvider>
+  </GoogleOAuthProvider>,
 );

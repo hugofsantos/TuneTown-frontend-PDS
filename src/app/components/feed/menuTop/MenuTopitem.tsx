@@ -12,7 +12,7 @@ type MenuitemShareProps = {
 
 type itemType = "music" | "album" | "podcast";
 
-export const MenuitemShare = ({ src, alt, name, type }: MenuitemShareProps) => {
+export const MenuitemShare = ({ src, name, type }: MenuitemShareProps) => {
   const [open, setOpen] = useState(false);
   const [itemType, setItemType] = useState<itemType>("music");
 

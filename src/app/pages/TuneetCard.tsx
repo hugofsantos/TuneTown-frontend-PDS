@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Tuneet } from "@/domain/types/Post";
 import { findTuneetById } from "../services/auth/findTuneetById";
 import { useParams } from "react-router-dom";
-import { findTunetsInfos } from "../services/auth/findInfoTuneet";
 import { makeAComment } from "../services/auth/makeAComment";
 import { findTunetsComments } from "../services/auth/findTunetsComments";
 import { TbTrash } from "react-icons/tb";
@@ -22,6 +21,7 @@ export const TuneetCard = () => {
   const [tuneet, setTuneet] = useState<Tuneet | null>(null);
   const [contentText, setContentText] = useState<string>("");
   const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const { tuneetId } = useParams();
 
@@ -33,11 +33,12 @@ export const TuneetCard = () => {
 
   async function fetchTuneet(tuneetId: string | null) {
     if (!tuneetId) return;
+    setLoading(true);
     const tuneet = await findTuneetById(tuneetId);
     const comments = await findTunetsComments(tuneetId);
-    const response = await findTunetsInfos(tuneetId);
     setTuneet(tuneet || null);
-    setComments(comments.content || []);
+    setComments(comments?.content || []);
+    setLoading(false);
   }
 
   async function commentTuneet() {
@@ -52,12 +53,23 @@ export const TuneetCard = () => {
         className="h-full md:max-w-2xl w-full rounded-lg border-box relative border-r-[1px] 
        border-stroke overflow-hidden flex flex-col items-center overflow-y-auto"
       >
-        <Card
-          author={tuneet?.author.username || ""}
-          authorImg={tuneet?.author.profile.urlPhoto || ""}
-          content={tuneet?.textContent || ""}
-          track={tuneet!}
-        />
+        {loading || !tuneet ? (
+          <div className="w-full border border-stroke rounded-lg bg-fume p-4 animate-pulse space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full bg-stroke h-10 w-10" />
+              <div className="flex-1 h-3 bg-stroke rounded" />
+            </div>
+            <div className="h-4 bg-stroke rounded w-3/4" />
+            <div className="h-32 bg-stroke/70 rounded" />
+          </div>
+        ) : (
+          <Card
+            author={tuneet.author?.username || ""}
+            authorImg={tuneet.author?.profile?.photoUrl || ""}
+            content={tuneet.textContent || ""}
+            track={tuneet}
+          />
+        )}
 
         <div className="w-full  p-4 max-w-2xl mt-6  bg-fume rounded-lg border border-stroke flex flex-col gap-3">
           <h3 className="font-bold text-lg text-theme">Comentários</h3>

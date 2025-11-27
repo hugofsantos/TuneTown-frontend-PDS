@@ -1,5 +1,4 @@
 import logo from "../assets/logo.svg";
-import spotify_logo from "../assets/spotify_logo.svg";
 import { ThemeButton } from "../components/ThemeButton";
 import { Button } from "../components/Button";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -40,10 +39,7 @@ export const InitialPage = ({
 
     form === "signUp" ? setSignUpOpen(true) : setSignUpOpen(false);
     form === "signIn" ? setSignInOpen(true) : setSignInOpen(false);
-  }, [user, profile]);
-
-  const AUTH_URL: string =
-    "https://accounts.spotify.com/authorize?client_id=3ac3788f57dc4ea3bccc70d37a4d8697&response_type=code&redirect_uri=http://localhost:2222/callback&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
+  }, [user, profile, form, navigate]);
 
   return (
     <div className="bg-base text-contrast justify-center items-center flex fixed w-screen h-screen text-balance">
@@ -71,30 +67,6 @@ export const InitialPage = ({
           <h1 className="font-semibold  text-3xl  outline-none pointer-events-none ">
             Inscreva-se hoje
           </h1>
-          <div className="justify-center overflow-hidden">
-            <Button
-              onClick={() => {
-                window.location.href = AUTH_URL;
-                console.log("initial Page");
-              }}
-              bg="bg-white"
-            >
-              <div className="flex text-[#161616] relative gap-3">
-                <div className=" relative h-auto size-6  md:flex ">
-                  <img className="size-fit " src={spotify_logo} alt="Logo" />
-                </div>
-                Inscrever-se com Spotify
-              </div>
-            </Button>
-          </div>
-
-          <div>
-            <div className="relative border-b">
-              <span className="px-2 bg-base absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                ou
-              </span>
-            </div>
-          </div>
 
           <Dialog.Root open={signUpOpen}>
             <Dialog.Trigger asChild>

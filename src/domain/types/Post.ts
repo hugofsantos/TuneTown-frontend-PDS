@@ -1,38 +1,36 @@
 import { Comment } from "./Comment";
 import { Like } from "./Like";
-import { User, UserWithProfile } from "./User";
+import { UserWithProfile } from "./User";
+
+export type TunableItem = {
+  itemId: string;
+  title: string;
+  artist: string;
+  artworkUrl: string;
+  platformId?: string;
+  type?: "MUSIC" | "ALBUM" | "PODCAST";
+};
 
 export type Tuneet = {
   id: string;
   authorId: string;
   textContent: string;
-  tunableItem: {
-    plataformId: string;
-    title: string;
-    artist: string;
-    artworkUrl: string;
-    type: "MUSIC" | "ALBUM" | "PODCAST";
-    itemId: string;
-  };
-  itemId: string;
-  itemPlataform: string;
-  itemArtist: string;
-  itemArtworkUrl: string;
-  tunableContent: string;
-  itemTitle: string;
-  authorName: string;
-  createdAt: string;
-  totalLikes: number;
-  totalComments: number;
-  comments: Comment[];
-  likes: Like[];
-  author: UserWithProfile;
-};
-
-export type PostEntity = Tuneet & {
-  id: string;
-  authorId: string;
-  createdAt: string;
+  createdAt?: string;
+  authorUsername?: string;
+  author?: UserWithProfile | null;
+  tunableItem?: TunableItem | null;
+  tunableItemTitle?: string;
+  tunableItemArtist?: string;
+  tunableItemArtworkUrl?: string;
+  itemArtworkUrl?: string;
+  itemArtist?: string;
+  itemTitle?: string;
+  tunableContent?: string;
+  totalLikes?: number;
+  totalComments?: number;
+  comments?: Comment[];
+  likes?: Like[];
+  photoUrl?: string | null;
 };
 
 export type PageMetadados = {
@@ -44,7 +42,7 @@ export type PageMetadados = {
 };
 
 export type TuneetResponse = PageMetadados & {
-  itens: any[];
+  itens: Tuneet[];
 };
 
 export type TuneetTrending = {

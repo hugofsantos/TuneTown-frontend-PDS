@@ -1,36 +1,42 @@
 import { searchProfiles } from "@/app/services/auth/searchProfiles";
 import { useAuth } from "@/infra/contexts/auth/UseAuth";
 import { useState } from "react";
-import { set } from "react-hook-form";
 import { IoIosSearch } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { UserWithProfile } from "@/domain/types/User";
 
 const SearchInput = () => {
   const { user } = useAuth();
-  const [perfis, setPerfis] = useState([]);
+  const [perfis, setPerfis] = useState<UserWithProfile[]>([]);
+  const [searchTimeout, setSearchTimeout] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
-  async function handleSearchChange(
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) {
-    try {
-      const query = event.target.value;
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
 
-      if (query.trim() === "") {
-        setPerfis([]);
-        return;
-      }
-
-      const response = await searchProfiles(query);
-      const filtered = response.filter(
-        (perfil: any) => perfil.userId !== user?.id,
-      );
-      setPerfis(filtered);
-    } catch (e) {
+    if (query.trim() === "") {
+      setPerfis([]);
       return;
     }
-  }
+
+    // debounce to avoid hammering API
+    if (searchTimeout) {
+      window.clearTimeout(searchTimeout);
+    }
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const response = await searchProfiles(query);
+        const filtered =
+          response?.filter((perfil) => perfil.profile?.userId !== user?.id) ??
+          [];
+        setPerfis(filtered);
+      } catch (e) {
+        setPerfis([]);
+      }
+    }, 400);
+    setSearchTimeout(timeoutId);
+  };
 
   return (
     <div className="relative w-[95%] group ">
@@ -46,7 +52,7 @@ const SearchInput = () => {
       />
       {perfis.length > 0 && (
         <div className="absolute top-full left-0 w-full  border border-stroke bg-fume rounded-md mt-1 max-h-60 overflow-y-auto z-10">
-          {perfis.map((perfil: any) => (
+          {perfis.map((perfil) => (
             <div
               onClick={() => {
                 setPerfis([]);
@@ -56,9 +62,9 @@ const SearchInput = () => {
               key={perfil.id}
               className="flex items-center gap-3 px-4 hover:border-theme  border border-fume rounded-md py-2 cursor-pointer"
             >
-              {perfil.photoUrl ? (
+              {perfil.profile?.photoUrl ? (
                 <img
-                  src={perfil.photoUrl}
+                  src={perfil.profile.photoUrl}
                   alt={perfil.username}
                   className="w-8 h-8 rounded-full object-cover"
                 />

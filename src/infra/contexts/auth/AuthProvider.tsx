@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./UseAuth";
 import AxiosAdapter from "../../http/AxiosAdapter";
 import { UserWithProfile } from "../../../domain/types/User";
@@ -16,11 +16,9 @@ type AuthProviderProps = PropsWithChildren & {
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserWithProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [tokenSpotify, setTokenSpotify] = useState<string>("");
-  const [refreshToken, setRefreshToken] = useState<string>("");
   const [profile, setProfile] = useState<Profile | null>(null);
 
-  const httpClient = new AxiosAdapter();
+  const httpClient = useMemo(() => new AxiosAdapter(), []);
 
   useEffect(() => {
     const token = localStorage.getItem("tunetown@token");
@@ -32,58 +30,94 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       httpClient.setHeaders({ Authorization: `Bearer ${token}` });
     }
 
-    if (profile && profile !== "undefined") {
-      setUser(user ? JSON.parse(user) : null);
-      setProfile(profile ? JSON.parse(profile) : null);
+    const parsedUser = user ? JSON.parse(user) : null;
+    const parsedProfile = profile ? JSON.parse(profile) : null;
+    const normalizedProfile = parsedProfile
+      ? { ...parsedProfile, photoUrl: parsedProfile.photoUrl ?? parsedProfile.urlPhoto }
+      : null;
+
+    if (parsedUser) {
+      setUser(parsedUser);
     }
-    setLoading(false);
-  }, []);
+    if (normalizedProfile) {
+      setProfile(normalizedProfile);
+      setLoading(false);
+      return;
+    }
+
+    // Fallback: if we have a token and user but no stored profile, try fetching/creating once
+    const bootstrapProfile = async () => {
+      if (token && parsedUser) {
+        try {
+          if (parsedUser.profileId) {
+            const fetched = await findUserProfile(parsedUser.profileId);
+            if (fetched) {
+              setProfile(fetched);
+              localStorage.setItem("tunetown@profile", JSON.stringify(fetched));
+            }
+          }
+        } catch (error) {
+          console.error("Erro ao recuperar perfil:", error);
+        }
+      }
+      setLoading(false);
+    };
+
+    bootstrapProfile();
+  }, [httpClient]);
 
   async function handleRegister(data: UserRegister) {
     setLoading(true);
-
-    // if (data.accessToken) {
-    //   setTokenSpotify(data.accessToken);
-    //   localStorage.setItem("tunetown@tokenSpotify", JSON.stringify(data.accessToken));
-    // }
-
-    const response = await signUpRequest(data);
-
-    setLoading(false);
+    try {
+      await signUpRequest(data);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleLogin({ login, password }: UserLogin) {
     setLoading(true);
 
-    const data = await signInRequest({ login, password });
+    try {
+      const data = await signInRequest({ login, password });
 
-    localStorage.setItem("tunetown@token", data.accessToken);
-    localStorage.setItem("tunetown@user", JSON.stringify(data.userDTO));
+      if (!data) {
+        setLoading(false);
+        return;
+      }
 
-    httpClient.setHeaders({ Authorization: `Bearer ${data.accessToken}` });
+      localStorage.setItem("tunetown@token", data.accessToken);
+      localStorage.setItem("tunetown@user", JSON.stringify(data.userDTO));
 
-    setUser(data.userDTO);
+      httpClient.setHeaders({ Authorization: `Bearer ${data.accessToken}` });
 
-    if (!(data.userDTO.profileId === null)) {
-      const profile = await findUserProfile(data.userDTO.profileId);
-      localStorage.setItem("tunetown@profile", JSON.stringify(profile.data));
-      setProfile(profile.data);
-    } else {
-      const profileData = await createProfile(data.userDTO.id);
-      localStorage.setItem(
-        "tunetown@profile",
-        JSON.stringify(profileData.profile),
-      );
-      setProfile(profileData.profile);
+      setUser(data.userDTO);
+
+      if (data.userDTO.profileId) {
+        const profile = await findUserProfile(data.userDTO.profileId);
+        if (profile) {
+          localStorage.setItem("tunetown@profile", JSON.stringify(profile));
+          setProfile(profile);
+        }
+      } else {
+        const profileData = await createProfile(data.userDTO.id);
+        if (profileData) {
+          localStorage.setItem("tunetown@profile", JSON.stringify(profileData));
+          setProfile(profileData);
+        }
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   function handleLogout() {
-    // setUser(null);
-    // localStorage.removeItem("tunetown@token");
-    // httpClient.setHeaders("");
+    setUser(null);
+    setProfile(null);
+    localStorage.removeItem("tunetown@token");
+    localStorage.removeItem("tunetown@user");
+    localStorage.removeItem("tunetown@profile");
+    httpClient.setHeaders(null);
   }
 
   return (
@@ -95,11 +129,16 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         setProfile,
         handleLogin,
         handleLogout,
-        tokenSpotify,
         handleRegister,
       }}
     >
-      {children}
+      {loading ? (
+        <div className="w-screen h-screen flex items-center justify-center bg-base text-contrast">
+          Carregando...
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }

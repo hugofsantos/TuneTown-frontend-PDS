@@ -7,13 +7,11 @@ import { deleteFollowUser } from "@/app/services/auth/deleteFollowUser";
 interface FollowButtonProps {
   followedId?: string;
   isFollowing?: boolean;
-  disabled?: boolean;
 }
 
 export const FollowButton: React.FC<FollowButtonProps> = ({
   followedId = "",
   isFollowing = false,
-  disabled = false,
 }) => {
   const [loading, setLoading] = useState(false);
   const [following, setFollowing] = useState(isFollowing);
@@ -31,6 +29,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       }
       setFollowing(true);
     } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -38,10 +37,11 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
 
   return (
     <button
-      className={`flex items-center gap-1 px-2 py-1 rounded-full text-theme font-medium transition-all duration-150 shadow-sm hover:bg-theme hover:text-fume hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed`}
+      className={`flex items-center gap-1 px-3 py-1 rounded-full border border-theme text-theme font-medium transition-all duration-150 shadow-sm hover:bg-theme hover:text-fume hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed`}
       onClick={handleFollow}
+      disabled={loading}
     >
-      <BiPlus /> {following ? "seguindo" : loading ? "seguindo..." : "seguir"}
+      <BiPlus /> {loading ? "aguarde..." : following ? "seguindo" : "seguir"}
     </button>
   );
 };

@@ -14,15 +14,13 @@ export const ShareTuner = (tuneet: TuneetTrending) => {
     }
   }
   return (
-    <div className="flex flex-col  gap-1 hover:bg-slate-50/10 w-full mb-2">
-      <p className="text-xs text-slate-200">{traduzirTipo(tuneet.itemType)}</p>
-      <div className="flex text-sm gap-5  font-bold w-full items-center text-nowrap">
-        <p className="flex justify-start w-1/3 flex-wrap text-wrap">
-          {tuneet.title}
-        </p>
-        <p className="flex justify-start w-1/3 flex-wrap">{tuneet.artist}</p>
+    <div className="flex flex-col gap-1 w-full mb-2 p-2 rounded-md border border-stroke bg-fume/60 hover:bg-fume/80 transition">
+      <p className="text-xs text-contrast/60">{traduzirTipo(tuneet.itemType)}</p>
+      <div className="flex text-sm gap-3 font-semibold w-full items-center">
+        <p className="flex-1 truncate">{tuneet.title}</p>
+        <p className="flex-1 truncate text-contrast/80">{tuneet.artist}</p>
       </div>
-      <p className="text-xs text-slate-200">{tuneet.tuneetCount} tuneets</p>
+      <p className="text-xs text-theme">{tuneet.tuneetCount} tuneets</p>
     </div>
   );
 };

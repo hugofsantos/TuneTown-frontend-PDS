@@ -5,7 +5,7 @@ export async function findTunetsInfos(tuneetId: string) {
 
   try {
     return await likeGatewayHttp.findTunetsInfos(tuneetId);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Erro ao fazer requisição:", error);
   }
 }

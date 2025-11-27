@@ -10,12 +10,14 @@ export const Sidebar = () => {
   const [trendingTracks, setTrendingTracks] = useState<TuneetTrending[]>([]);
 
   useEffect(() => {
-    fetchTrendingTracks();
-
     async function fetchTrendingTracks() {
       const response = await findTrendingTracks();
-      setTrendingTracks(response);
+      if (response) {
+        setTrendingTracks(response);
+      }
     }
+
+    fetchTrendingTracks();
   }, []);
 
   return (
@@ -31,17 +33,24 @@ export const Sidebar = () => {
             <p className="font-bold text-pretty text-xl text-theme">
               Hits do momento
             </p>
-            {trendingTracks.map((track: TuneetTrending, index: number) => (
-              <ShareTuner
-                itemId={track.itemId}
-                title={track.title}
-                artist={track.artist}
-                artworkUrl={track.artworkUrl}
-                itemType={track.itemType}
-                platformId={track.platformId}
-                tuneetCount={track.tuneetCount}
-              />
-            ))}
+            {trendingTracks.length === 0 ? (
+              <p className="text-sm text-contrast/60">
+                Nada por aqui ainda. Volte mais tarde!
+              </p>
+            ) : (
+              trendingTracks.map((track: TuneetTrending) => (
+                <ShareTuner
+                  key={track.itemId}
+                  itemId={track.itemId}
+                  title={track.title}
+                  artist={track.artist}
+                  artworkUrl={track.artworkUrl}
+                  itemType={track.itemType}
+                  platformId={track.platformId}
+                  tuneetCount={track.tuneetCount}
+                />
+              ))
+            )}
           </div>
         </BoxSidebar>
       </div>

@@ -1,5 +1,4 @@
 import CommentGatewayHttp from "@/infra/gateway/CommentGatewayHttp";
-import LikeGatewayHttp from "@/infra/gateway/LikeGatewayHttp";
 import { toast } from "sonner";
 
 export async function makeAComment(
@@ -15,9 +14,8 @@ export async function makeAComment(
       profileId,
       contentText,
     );
-    // toast.success(response.message)
-    return response.data;
-  } catch (error: any) {
+    return response?.data ?? response;
+  } catch (error: unknown) {
     console.error("Erro ao fazer requisição:", error);
     toast.error("Ocorreu um erro, por favor tente novamente.");
   }

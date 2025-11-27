@@ -1,5 +1,5 @@
 import HttpClient from "./IHttpClient";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 // Função utilitária para deslogar usuário
@@ -10,55 +10,62 @@ function forceLogout() {
   window.location.reload();
 }
 export default class AxiosAdapter implements HttpClient {
-  async delete(url: string): Promise<any> {
+  constructor() {
+    const savedToken = localStorage.getItem("tunetown@token");
+    if (savedToken) {
+      axios.defaults.headers.common.Authorization = `Bearer ${savedToken}`;
+    }
+  }
+
+  private handleAuthError(error: unknown) {
+    const axiosError = error as AxiosError;
+    if (axiosError?.response?.status === 403) {
+      toast.error(
+        "Sessão expirada ou acesso não autorizado. Faça login novamente.",
+      );
+      forceLogout();
+    }
+  }
+
+  async delete<T>(url: string): Promise<T> {
     try {
-      const res = await axios.delete(url);
+      const res = await axios.delete<T>(url);
       return res.data;
-    } catch (error: any) {
-      if (error?.response?.status === 403) {
-        toast.error(
-          "Sessão expirada ou acesso não autorizado. Faça login novamente.",
-        );
-        forceLogout();
-      }
+    } catch (error: unknown) {
+      this.handleAuthError(error);
       console.error(`Error in delete: ${error}`);
       throw error;
     }
   }
 
-  async get(url: string): Promise<any> {
+  async get<T>(url: string): Promise<T> {
     try {
-      const res = await axios.get(url);
+      const res = await axios.get<T>(url);
       return res.data;
-    } catch (error: any) {
-      if (error?.response?.status === 403) {
-        toast.error(
-          "Sessão expirada ou acesso não autorizado. Faça login novamente.",
-        );
-        forceLogout();
-      }
+    } catch (error: unknown) {
+      this.handleAuthError(error);
       console.error(`Error in get: ${error}`);
       throw error;
     }
   }
 
-  async post(url: string, data: any): Promise<any> {
+  async post<T>(url: string, data: unknown): Promise<T> {
     try {
       // Detect FormData and set headers for file upload
       let config = {};
       if (typeof FormData !== "undefined" && data instanceof FormData) {
         config = { headers: { "Content-Type": "multipart/form-data" } };
       }
-      const res = await axios.post(url, data, config);
+      const res = await axios.post<T>(url, data, config);
       return res.data;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(`Error in post: ${error}`);
       throw error;
     }
   }
 
-  async put(url: string, data: any): Promise<any> {
-    const res = await axios.put(url, data);
+  async put<T>(url: string, data: unknown): Promise<T> {
+    const res = await axios.put<T>(url, data);
     return res.data;
   }
 

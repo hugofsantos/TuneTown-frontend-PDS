@@ -1,11 +1,11 @@
-import { PageMetadados } from "@/domain/types/Post";
+import { PageMetadados, TuneetResponse } from "@/domain/types/Post";
 import TuneetGatewayHttp from "@/infra/gateway/TuneetGatewayHttp";
 import { toast } from "sonner";
 
 export async function findTuneetsByUserId(
   userId: string,
   metadados: PageMetadados,
-) {
+): Promise<TuneetResponse | undefined> {
   const tuneetGatewayHttp = new TuneetGatewayHttp();
 
   try {
@@ -15,7 +15,7 @@ export async function findTuneetsByUserId(
     );
     console.log(response);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Erro ao fazer requisição:", error);
     toast.error("Ocorreu um erro, por favor tente novamente.");
   }

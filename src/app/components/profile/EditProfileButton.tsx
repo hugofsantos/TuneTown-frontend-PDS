@@ -25,7 +25,7 @@ export const EditProfileButton = () => {
         >
           <div className="flex gap-4  items-center  ">
             <Dialog.Close asChild>
-              <CloseButton arial-label="Close" />
+              <CloseButton aria-label="Close" onClick={() => {}} />
             </Dialog.Close>
             <p className="font-semibold text-xl"> Edital perfil </p>
           </div>

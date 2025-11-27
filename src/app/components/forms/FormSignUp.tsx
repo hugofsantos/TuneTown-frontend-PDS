@@ -20,7 +20,7 @@ export const FormSignUp = ({
   refreshToken,
   accessToken,
 }: FormSignUpProps) => {
-  const { register, handleSubmit, watch } = useForm<UserRegister>({
+  const { register, handleSubmit } = useForm<UserRegister>({
     defaultValues: {
       name,
       email,

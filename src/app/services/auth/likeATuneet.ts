@@ -6,9 +6,9 @@ export async function likeATuneet(tuneetId: string, profileId: string) {
 
   try {
     const response = await likeGatewayHttp.likeATuneet(tuneetId, profileId);
-    // toast.success(response.message)
-    return response.data;
-  } catch (error: any) {
+    const data = response as { data?: unknown };
+    return data?.data ?? response;
+  } catch (error: unknown) {
     console.error("Erro ao fazer requisição:", error);
     toast.error("Ocorreu um erro, por favor tente novamente.");
   }
